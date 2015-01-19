@@ -1,0 +1,14 @@
+{
+        "browser": true,
+        "debug": true,  // Allow debugger statements e.g. browser breakpoints.
+        "devel": true,   // Allow developments statements e.g. `console.log();`.
+        "camelCase": true,
+        "curly": true,
+        "eqeqeq": true,
+        "forin": true,
+        "freeze": true,
+        "noempty": true,
+        "undef": true,
+        "unused": true,
+        "strict": true
+}
