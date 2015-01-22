@@ -1,4 +1,10 @@
-colorscheme desert
+" use vim mode instead of vi
+set nocompatible
+
+try
+    colorscheme desert
+catch
+end
 execute pathogen#infect()
 
 filetype on
@@ -10,8 +16,13 @@ let mapleader = ','
 
 " This is so we don't get a delay between ESC and O
 set timeoutlen=200
-set mouse=a
-" i hate swapfiles
+" turn mouse mode on if there is one
+if has('mouse')
+    set mouse=a
+endif
+" Disable backups
+set nobackup
+set nowb
 set noswapfile
 
 syntax on                                                                                                                                                            
@@ -27,8 +38,6 @@ set smartcase
 set scrolloff=10
 " # of allowed undos
 set undolevels=100
-" make sure we are always compatible by deafult
-set nocompatible
 " enables auto indenting
 set autoindent
 " detects correct indenting based on file type
