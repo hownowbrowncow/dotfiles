@@ -4,7 +4,8 @@ set nocompatible
 try
     colorscheme desert
 catch
-end
+endtry
+
 execute pathogen#infect()
 
 filetype on
