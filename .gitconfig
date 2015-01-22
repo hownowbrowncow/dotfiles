@@ -1,7 +1,15 @@
+[config]
+
+    # default editor should always be vim
+    editor = vim
+
 [alias]
 
     # List commits in short form, with colors and branch/tag annotations. 
     ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+
+    # Graph commits, abbreviated IDS, dates relative to now, with commit refernce, colors, author of commit
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 
     # View the current working tree status using the short format
     s = status -s
