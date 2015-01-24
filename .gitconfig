@@ -1,8 +1,3 @@
-[config]
-
-    # default editor should always be vim
-    editor = vim
-
 [alias]
 
     # List commits in short form, with colors and branch/tag annotations. 
