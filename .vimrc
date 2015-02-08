@@ -97,4 +97,4 @@ let jshint2_read = 1
 " lint after save
 let jshint2_save = 1
 " skip confirm for non js files
-let jshint2_confirm = 0
+let jshint2_confirm = 1
