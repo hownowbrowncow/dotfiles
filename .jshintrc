@@ -11,6 +11,5 @@
     "undef": true,
     "unused": true,
     "debug": true,
-    "jquery": true,
     "browserify": true
 }
