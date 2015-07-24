@@ -46,9 +46,9 @@ set smartindent
 " tab spaces and backspaces
 set smarttab
 " 4 spaces tabs
-"set tabstop=4
-"set shiftwidth=4
-"set expandtab
+set tabstop=4
+set shiftwidth=4
+set expandtab
 " make backspace work like most other apps
 set backspace=2
 
@@ -66,7 +66,6 @@ set history=100
 set wildmenu
 set display+=lastline
 
-
 nmap <leader>m :set mouse=a<CR>
 nmap <leader>M :set mouse=<CR>
 nmap <leader>n :set number<CR>
@@ -76,11 +75,6 @@ nmap <leader>P :set nopaste<CR>
 nmap <leader>h :set filetype=html<CR>
 nmap <leader>H :set filetype=php<CR>
 nmap <leader>t :tabnew
-
-" Run current file with phpunit
-nmap <leader>tc :!clear && phpunit -v -c ~/sites/oyster/phpunit.xml %<cr>
-" Run all tests from current directory
-nmap <leader>ta :!clear && phpunit -v -c $(pwd)/phpunit.xml<cr>
 
 " PSR2 for PHP
 let g:phpqa_codesniffer_args="--standard=PSR2"
@@ -99,17 +93,3 @@ let jshint2_read = 1
 let jshint2_save = 1
 " skip confirm for non js files
 let jshint2_confirm = 1
-
-" powerline
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
-" powerline install
-set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim/
-" Always show statusline
-set laststatus=2
-" Use 256 colours (Use this setting only if your terminal supports 256 colours)
-set t_Co=256
-" dont display any vim status bars
-set noshowmode
-set noshowcmd
