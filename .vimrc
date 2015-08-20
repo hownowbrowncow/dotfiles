@@ -76,20 +76,14 @@ nmap <leader>h :set filetype=html<CR>
 nmap <leader>H :set filetype=php<CR>
 nmap <leader>t :tabnew
 
-" PSR2 for PHP
-let g:phpqa_codesniffer_args="--standard=PSR2"
-" PHP Code Sniffer binary (default = "phpcs")
-let g:phpqa_codesniffer_cmd='~/.composer/vendor/bin/phpcs'
-" Don't run messdetector on save (default = 1)
-let g:phpqa_messdetector_autorun = 0
-" Don't run codesniffer on save (default = 1)
-let g:phpqa_codesniffer_autorun = 0
-" Show code coverage on load (default = 0)
-let g:phpqa_codecoverage_autorun = 0
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
-" lint after read
-let jshint2_read = 1
-" lint after save
-let jshint2_save = 1
-" skip confirm for non js files
-let jshint2_confirm = 1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_php_checkers = ['phpcs']
+let g:syntastic_php_phpcs_args = "--standard=PSR2"
