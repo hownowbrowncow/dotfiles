@@ -4,18 +4,23 @@ cd "$(dirname "${BASH_SOURCE}")";
 
 git pull origin master;
 
-function doIt() {
+function addDotFiles() {
     rsync --exclude ".git/" --exclude "bootstrap.sh" -avh --no-perms . ~;
-    source ~/.bash_profile;
+    source ~/.bashrc;
 }
 
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
-    doIt;
+    addDotFiles;
 else
-    read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1;
+    read -p "Sync dotfiles? (y/n)" -n 1;
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        doIt;
+        addDotFiles;
     fi;
 fi;
-unset doIt;
+
+unset addDotFiles;
+
+git config --global user.email "me@nickc.io"
+git config --global user.name "Nick C"
+git config --global core.editor vim
