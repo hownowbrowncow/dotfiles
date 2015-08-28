@@ -1,0 +1,15 @@
+[submodule "vim-plugins/syntastic"]
+	path = vim-plugins/syntastic
+	url = https://github.com/scrooloose/syntastic.git
+[submodule "vim-plugins/YouCompleteMe"]
+	path = vim-plugins/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "vim-plugins/vim-snippets"]
+	path = vim-plugins/vim-snippets
+	url = https://github.com/honza/vim-snippets.git
+[submodule "vim-plugins/ultisnips"]
+	path = vim-plugins/ultisnips
+	url = https://github.com/SirVer/ultisnips.git
+[submodule "vim-plugins/vim-es6"]
+	path = vim-plugins/vim-es6
+	url = https://github.com/isRuslan/vim-es6.git
