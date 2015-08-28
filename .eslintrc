@@ -6,7 +6,7 @@
         "classes": true,
         "defaultParams": true,
         "destructuring": true,
-        "forOf": false,
+        "forOf": true,
         "generators": true,
         "modules": true,
         "objectLiteralComputedProperties": true,
