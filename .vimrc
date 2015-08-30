@@ -1,10 +1,6 @@
 " use vim mode instead of vi
 set nocompatible
 
-try
-catch
-endtry
-
 execute pathogen#infect()
 
 filetype on
@@ -20,7 +16,8 @@ set timeoutlen=200
 if has('mouse')
     set mouse=a
 endif
-" Disable backups
+
+" Disable backups because git and they are annoying
 set nobackup
 set nowb
 set noswapfile
@@ -89,6 +86,9 @@ let g:syntastic_php_phpcs_args = "--standard=PSR2"
 
 let g:UltiSnipsExpandTrigger = "<nop>"
 let g:ulti_expand_or_jump_res = 0
+
+" use tab/s-tab to move up and down and enter to select snippet
+" makes YouCompleteMe and UltiSnips work together better
 function ExpandSnippetOrCarriageReturn()
     let snippet = UltiSnips#ExpandSnippetOrJump()
     if g:ulti_expand_or_jump_res > 0
@@ -97,4 +97,5 @@ function ExpandSnippetOrCarriageReturn()
         return "\<CR>"
     endif
 endfunction
+
 inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
