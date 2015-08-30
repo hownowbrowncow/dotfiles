@@ -58,3 +58,12 @@
     frag = magenta bold # line info
     old = red # deletions
     new = green # additions
+
+[user]
+
+	email = me@nickc.io
+	name = Nick C
+
+[core]
+
+	editor = vim
