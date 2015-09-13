@@ -58,8 +58,7 @@ set ruler
 set viminfo='20,\"50
 " command history
 set history=100
-" tab completion
-set wildmenu
+" display word wrap better
 set display+=lastline
 
 nmap <leader>m :set mouse=a<CR>
@@ -99,3 +98,16 @@ function ExpandSnippetOrCarriageReturn()
 endfunction
 
 inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
+
+" Run PHPUnit tests
+function! RunPHPUnitTest()
+    cd %:p:h
+    let result = system("phpunit -c " . $PHPUNIT_CONFIG . " " . bufname("%"))
+    split __PHPUnit_Result__
+    normal! ggdG
+    setlocal buftype=nofile
+    call append(0, split(result, '\v\n'))
+    cd -
+endfunction
+
+nnoremap <leader>u :call RunPHPUnitTest()<cr>
