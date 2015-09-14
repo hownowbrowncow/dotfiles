@@ -110,4 +110,4 @@ function! RunPHPUnitTest()
     cd -
 endfunction
 
-nnoremap <leader>u :call RunPHPUnitTest()<cr>
+nnoremap <leader>r :call RunPHPUnitTest()<cr>
