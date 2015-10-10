@@ -152,7 +152,7 @@
         "eol-last": 2,
         "func-names": 2,
         "func-style": [2, "declaration"],
-        "id-length": [2, {"min": 2, "max": 20}],
+        "id-length": [2, {"min": 2, "max": 20, "exceptions": ["_", "$"]}],
         "key-spacing": [2, {"beforeColon": false, "afterColon": true}],
         "lines-around-comment": [2, {"beforeLineComment": false, "afterLineComment": false}],
         "linebreak-style": [2, "unix"],
