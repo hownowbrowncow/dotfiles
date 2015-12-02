@@ -81,7 +81,10 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_php_checkers = ['phpcs']
-let g:syntastic_php_phpcs_args = "--standard=PSR2"
+let g:syntastic_php_phpcs_args = '--standard=PSR2'
+let g:syntastic_c_checkers = ['gcc']
+let g:syntastic_c_include_dirs = ['/usr/local/apr/include/apr-1']
+let g:syntastic_c_cflags = '-std=c99 -Wall -pedantic'
 
 " Run PHPUnit tests
 function! RunPHPUnitTest()
