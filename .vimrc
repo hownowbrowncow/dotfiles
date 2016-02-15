@@ -85,6 +85,8 @@ let g:syntastic_php_phpcs_args = '--standard=PSR2'
 let g:syntastic_c_checkers = ['gcc']
 let g:syntastic_c_include_dirs = ['/usr/local/apr/include/apr-1']
 let g:syntastic_c_cflags = '-std=c99 -Wall -pedantic'
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+nnoremap <leader>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
 
 " Run PHPUnit tests
 function! RunPHPUnitTest()
