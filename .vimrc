@@ -88,6 +88,22 @@ let g:syntastic_c_cflags = '-std=c99 -Wall -pedantic'
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
 nnoremap <leader>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
 
+let g:UltiSnipsExpandTrigger = "<nop>"
+let g:ulti_expand_or_jump_res = 0
+
+" use tab/s-tab to move up and down and enter to select snippet
+" makes YouCompleteMe and UltiSnips work together better
+function ExpandSnippetOrCarriageReturn()
+    let snippet = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res > 0
+        return snippet
+    else
+        return "\<CR>"
+    endif
+endfunction
+
+inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
+
 " Run PHPUnit tests
 function! RunPHPUnitTest()
     cd %:p:h
