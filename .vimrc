@@ -13,6 +13,9 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'kien/ctrlp.vim'
+Plugin 'JulesWang/css.vim'
+Plugin 'groenewege/vim-less'
+Plugin 'cakebaker/scss-syntax.vim'
 
 call vundle#end()
 
