@@ -87,6 +87,8 @@ nmap <leader>h :set filetype=html<CR>
 nmap <leader>H :set filetype=php<CR>
 nmap <leader>t :tabnew
 
+autocmd BufNewFile,BufRead *.json set filetype=json
+
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -103,7 +105,7 @@ let g:syntastic_php_phpcs_args = '--standard=PSR2'
 let g:syntastic_c_checkers = ['gcc']
 let g:syntastic_c_include_dirs = ['/usr/local/apr/include/apr-1']
 let g:syntastic_c_cflags = '-std=c99 -Wall -pedantic'
-let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': [] }
+let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['json'] }
 nnoremap <leader>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
 
 let g:UltiSnipsExpandTrigger = "<nop>"
