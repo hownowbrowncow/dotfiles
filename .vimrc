@@ -110,6 +110,7 @@ function! RunPHPUnitTest()
     cd -
 endfunction
 
+autocmd BufNewFile,BufRead .eslintrc set filetype=json
 autocmd BufNewFile,BufRead *.json set filetype=json
 autocmd Filetype json setlocal ts=2 sts=2 sw=2
 
