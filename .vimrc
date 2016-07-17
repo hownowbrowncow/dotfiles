@@ -7,6 +7,7 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'kien/ctrlp.vim'
@@ -82,6 +83,7 @@ let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['go']}
 let g:go_fmt_fail_silently = 1
 let g:go_fmt_autosave = 0
+let g:jsx_ext_required = 0
 
 " Run PHPUnit tests
 function! RunPHPUnitTest()
