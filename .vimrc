@@ -6,9 +6,6 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
 Plugin 'pangloss/vim-javascript'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'scrooloose/syntastic'
@@ -17,6 +14,7 @@ Plugin 'JulesWang/css.vim'
 Plugin 'groenewege/vim-less'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'fatih/vim-go'
+Plugin 'ajh17/VimCompletesMe'
 
 call vundle#end()
 
@@ -32,6 +30,7 @@ syntax on
 syntax enable
 
 let mapleader = ','
+
 set timeoutlen=200
 set incsearch
 set ignorecase
@@ -57,6 +56,7 @@ set noswapfile
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+set omnifunc=syntaxcomplete#Complete
 
 nmap <leader>m :set mouse=a<CR>
 nmap <leader>M :set mouse=<CR>
@@ -78,26 +78,10 @@ let g:syntastic_php_phpcs_args = '--standard=PSR2'
 let g:syntastic_c_checkers = ['gcc']
 let g:syntastic_c_include_dirs = ['/usr/local/apr/include/apr-1']
 let g:syntastic_c_cflags = '-std=c99 -Wall -pedantic'
-let g:syntastic_mode_map = {'mode': 'passive', 'active_filetypes': [],'passive_filetypes': ['json']}
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['go']}
 let g:go_fmt_fail_silently = 1
 let g:go_fmt_autosave = 0
-let g:UltiSnipsExpandTrigger = "<nop>"
-let g:ulti_expand_or_jump_res = 0
-
-" use tab/s-tab to move up and down and enter to select snippet
-" makes YouCompleteMe and UltiSnips work together better
-function ExpandSnippetOrCarriageReturn()
-    let snippet = UltiSnips#ExpandSnippetOrJump()
-    if g:ulti_expand_or_jump_res > 0
-        return snippet
-    else
-        return "\<CR>"
-    endif
-endfunction
-
-inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
 
 " Run PHPUnit tests
 function! RunPHPUnitTest()
