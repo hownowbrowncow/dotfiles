@@ -6,16 +6,22 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'edkolev/tmuxline.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'scrooloose/syntastic'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'JulesWang/css.vim'
 Plugin 'groenewege/vim-less'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'fatih/vim-go'
-Plugin 'ajh17/VimCompletesMe'
+Plugin 'Raimondi/delimitMate'
 
 call vundle#end()
 
@@ -32,6 +38,7 @@ syntax enable
 
 let mapleader = ','
 
+set background=dark
 set timeoutlen=200
 set incsearch
 set ignorecase
@@ -58,6 +65,10 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 set omnifunc=syntaxcomplete#Complete
+set noshowmode
+set noruler
+set noshowcmd
+set laststatus=2
 
 nmap <leader>m :set mouse=a<CR>
 nmap <leader>M :set mouse=<CR>
@@ -67,8 +78,13 @@ nmap <leader>p :set paste<CR>
 nmap <leader>P :set nopaste<CR>
 nmap <leader>h :set filetype=html<CR>
 nmap <leader>H :set filetype=php<CR>
-nmap <leader>t :tabnew
+nmap <leader>t :e<space>
+nmap <leader>c :w<CR>:bdelete<CR>
+nmap <leader>r :edit<CR>
+nmap <leader>o :pnext<CR>
+nmap <leader>i :pprevious<CR>
 
+let g:enable_bold_font = 0
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -84,6 +100,26 @@ let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['go']}
 let g:go_fmt_fail_silently = 1
 let g:go_fmt_autosave = 0
 let g:jsx_ext_required = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_detect_spell=1
+let g:airline_theme='base16_monokai'
+let g:airline_powerline_fonts=1
+let g:UltiSnipsExpandTrigger = "<nop>"
+let g:ulti_expand_or_jump_res = 0
+let g:ctrlp_show_hidden = 1
+
+" use tab/s-tab to move up and down and enter to select snippet
+" makes YouCompleteMe and UltiSnips work together better
+function ExpandSnippetOrCarriageReturn()
+    let snippet = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res > 0
+        return snippet
+    else
+        return "\<CR>"
+    endif
+endfunction
+
+inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
 
 " Run PHPUnit tests
 function! RunPHPUnitTest()
@@ -101,4 +137,4 @@ autocmd BufNewFile,BufRead *.json set filetype=json
 autocmd Filetype json setlocal ts=2 sts=2 sw=2
 
 nnoremap <leader>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
-nnoremap <leader>r :call RunPHPUnitTest()<cr>
+nnoremap <leader>R :call RunPHPUnitTest()<CR>
