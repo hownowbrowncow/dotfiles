@@ -22,6 +22,8 @@ Plugin 'groenewege/vim-less'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'fatih/vim-go'
 Plugin 'Raimondi/delimitMate'
+Plugin 'scrooloose/nerdtree'
+Plugin 'leafgarland/typescript-vim'
 
 call vundle#end()
 
@@ -79,10 +81,11 @@ nmap <leader>P :set nopaste<CR>
 nmap <leader>h :set filetype=html<CR>
 nmap <leader>H :set filetype=php<CR>
 nmap <leader>t :e<space>
-nmap <leader>c :w<CR>:bdelete<CR>
+nmap <leader>c :bdelete<CR>
 nmap <leader>r :edit<CR>
 nmap <leader>o :pnext<CR>
 nmap <leader>i :pprevious<CR>
+nmap <C-f> :NERDTreeToggle<CR>
 
 let g:enable_bold_font = 0
 let g:syntastic_always_populate_loc_list = 1
@@ -138,3 +141,5 @@ autocmd Filetype json setlocal ts=2 sts=2 sw=2
 
 nnoremap <leader>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
 nnoremap <leader>R :call RunPHPUnitTest()<CR>
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-b> :bprevious<CR>
