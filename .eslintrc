@@ -143,7 +143,7 @@
 
     //Stylistic Issues
     "array-bracket-spacing": [2, "never"],
-    "indent": 2,
+    "indent": ["error"],
     "brace-style": [2, "1tbs"],
     "camelcase": 2,
     "comma-spacing": [1, {"before": false, "after": true}],
