@@ -87,6 +87,7 @@ nmap <leader>o :pnext<CR>
 nmap <leader>i :pprevious<CR>
 nmap <C-f> :NERDTreeToggle<CR>
 
+let g:javascript_plugin_flow = 1
 let g:enable_bold_font = 0
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -136,6 +137,7 @@ function! RunPHPUnitTest()
 endfunction
 
 autocmd BufNewFile,BufRead .eslintrc set filetype=json
+autocmd BufNewFile,BufRead .eslintrc.react set filetype=json
 autocmd BufNewFile,BufRead *.json set filetype=json
 autocmd Filetype json setlocal ts=2 sts=2 sw=2
 
