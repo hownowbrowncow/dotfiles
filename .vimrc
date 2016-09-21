@@ -101,8 +101,8 @@ let g:syntastic_c_include_dirs = ['/usr/local/apr/include/apr-1']
 let g:syntastic_c_cflags = '-std=c99 -Wall -pedantic'
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['go']}
-let g:go_fmt_fail_silently = 1
-let g:go_fmt_autosave = 0
+let g:go_fmt_fail_silently = 0
+let g:go_fmt_autosave = 1
 let g:jsx_ext_required = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_spell=1
@@ -111,6 +111,7 @@ let g:airline_powerline_fonts=1
 let g:UltiSnipsExpandTrigger = "<nop>"
 let g:ulti_expand_or_jump_res = 0
 let g:ctrlp_show_hidden = 1
+let NERDTreeShowHidden=1
 
 " use tab/s-tab to move up and down and enter to select snippet
 " makes YouCompleteMe and UltiSnips work together better
