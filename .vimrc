@@ -41,7 +41,7 @@ syntax enable
 
 let mapleader = ','
 
-set background=dark
+set background=light
 set timeoutlen=200
 set incsearch
 set ignorecase
