@@ -25,6 +25,7 @@ Plugin 'fatih/vim-go'
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
 Plugin 'leafgarland/typescript-vim'
+Plugin 'NLKNguyen/papercolor-theme'
 
 call vundle#end()
 
@@ -40,6 +41,11 @@ syntax on
 syntax enable
 
 let mapleader = ','
+
+set t_Co=256   " This is may or may not needed.
+
+set background=dark
+colorscheme PaperColor
 
 set background=light
 set timeoutlen=200
