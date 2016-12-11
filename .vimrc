@@ -47,7 +47,6 @@ set t_Co=256   " This is may or may not needed.
 set background=dark
 colorscheme PaperColor
 
-set background=light
 set timeoutlen=200
 set incsearch
 set ignorecase
