@@ -26,6 +26,8 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'NLKNguyen/papercolor-theme'
+Plugin 'Quramy/tsuquyomi'
+Plugin 'Shougo/vimproc.vim'
 
 call vundle#end()
 
@@ -101,6 +103,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_typescript_checkers = ['tslint']
 let g:syntastic_php_checkers = ['phpcs']
 let g:syntastic_php_phpcs_args = '--standard=PSR2'
 let g:syntastic_c_checkers = ['gcc']
