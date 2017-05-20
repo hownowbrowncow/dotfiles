@@ -6,29 +6,47 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+
+" Themes
 Plugin 'edkolev/tmuxline.vim'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'NLKNguyen/papercolor-theme'
+
+" Auto-completion
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+
+" Linting
+Plugin 'scrooloose/syntastic'
+Plugin 'editorconfig/editorconfig-vim'
+
+" Utility
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'Raimondi/delimitMate'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'Valloric/MatchTagAlways'
+
+" JavaScript
 Plugin 'pangloss/vim-javascript'
+
+" JSX/Flow
 Plugin 'mxw/vim-jsx'
 Plugin 'flowtype/vim-flow'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'scrooloose/syntastic'
-Plugin 'ctrlpvim/ctrlp.vim'
+
+" TypeScript
+Plugin 'leafgarland/typescript-vim'
+Plugin 'Quramy/tsuquyomi'
+
+" *SS
 Plugin 'JulesWang/css.vim'
 Plugin 'groenewege/vim-less'
 Plugin 'cakebaker/scss-syntax.vim'
+
+" Go-Lang
 Plugin 'fatih/vim-go'
-Plugin 'Raimondi/delimitMate'
-Plugin 'scrooloose/nerdtree'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'NLKNguyen/papercolor-theme'
-Plugin 'Valloric/MatchTagAlways'
-Plugin 'Quramy/tsuquyomi'
-Plugin 'Shougo/vimproc.vim'
 
 call vundle#end()
 
