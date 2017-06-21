@@ -62,6 +62,14 @@ if ! shopt -oq posix; then
     fi
 fi
 
+function cd() {
+    if [ $# = 0 ]; then
+        builtin cd "$HOME"
+    else
+        builtin cd "$@"
+    fi
+}
+
 # Go back with ..
 b() {
     str=""
@@ -85,15 +93,6 @@ man() {
         LESS_TERMCAP_ue=$(printf "\e[0m") \
         LESS_TERMCAP_us=$(printf "\e[1;32m") \
         man "$@"
-}
-
-# Auto cd
-shopt -s autocd
-
-# ls after a cd
-function cd()
-{
-    builtin cd "$*" && ls
 }
 
 extract () {
