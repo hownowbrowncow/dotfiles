@@ -163,4 +163,4 @@ function parse_git_dirty {
 	fi
 }
 
-export PS1="\[\e[31m\]┌─╼\[\e[m\] [\h] [\w] \`parse_git_branch\`\n\[$(tput sgr0)\]\[\e[31m\]└────╼\[\e[m\] \T: "
+export PS1="\[\e[31m\]┌─╼\[\e[m\] [\h] [\w] \`parse_git_branch\`\n\[$(tput sgr0)\]\[\e[31m\]└────╼\[\e[m\] "
