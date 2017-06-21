@@ -11,7 +11,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'NLKNguyen/papercolor-theme'
+Plugin 'chriskempson/base16-vim'
 
 " Auto-completion
 Plugin 'Valloric/YouCompleteMe'
@@ -62,11 +62,15 @@ syntax on
 syntax enable
 
 let mapleader = ','
-
+let base16colorspace=256
 set t_Co=256   " This is may or may not needed.
 
 set background=dark
-colorscheme PaperColor
+
+if filereadable(expand("~/.vimrc_background"))
+    let base16colorspace=256
+    source ~/.vimrc_background
+endif
 
 set timeoutlen=200
 set incsearch
@@ -135,7 +139,7 @@ let g:go_fmt_autosave = 1
 let g:jsx_ext_required = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_spell=1
-let g:airline_theme='papercolor'
+let g:airline_theme='base16_monokai'
 let g:airline_powerline_fonts=1
 let g:UltiSnipsExpandTrigger = "<nop>"
 let g:ulti_expand_or_jump_res = 0
