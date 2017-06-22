@@ -26,6 +26,7 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Valloric/MatchTagAlways'
+Plugin 'kien/ctrlp.vim'
 
 " JavaScript
 Plugin 'pangloss/vim-javascript'
