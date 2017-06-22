@@ -25,7 +25,6 @@ Plugin 'editorconfig/editorconfig-vim'
 " Utility Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
-Plugin 'Shougo/vimproc.vim'
 Plugin 'Valloric/MatchTagAlways'
 
 " JavaScript
