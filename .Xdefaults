@@ -1,0 +1,27 @@
+URxvt.font:xft:hack:pixelsize=12
+URxvt.italicfont:xft:hack:pixelsize=12
+URxvt.boldFont:xft:hack:pizelsize=12
+URxvt.letterSpace: -1
+URxvt.scrollBar: false
+
+URxvt.foreground: #a6a28c
+URxvt.background: #20201D
+URxvt.cursorColor: #a6a28c
+
+URxvt.color0: #F92672 
+URxvt.color1: #D73737
+URxvt.color2: #60AC39
+URxvt.color3: #AE9513
+URxvt.color4: #6684E1
+URxvt.color5: #B854D4
+URxvt.color6: #1FAD83
+URxvt.color7: #A6A28C
+
+URxvt.color8: #7D7A68
+URxvt.color9: #D73737
+URxvt.color10: #60AC39
+URxvt.color11: #AE9513
+URxvt.color12: #6684E1
+URxvt.color13: #B854D4
+URxvt.color14: #1FAD83
+URxvt.color15: #FEFBEC
