@@ -22,8 +22,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'scrooloose/syntastic'
 Plugin 'editorconfig/editorconfig-vim'
 
-" Utility
-Plugin 'ctrlpvim/ctrlp.vim'
+" Utility Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/vimproc.vim'
@@ -62,16 +61,14 @@ syntax on
 syntax enable
 
 let mapleader = ','
-let base16colorspace=256
-set t_Co=256   " This is may or may not needed.
-
-set background=dark
 
 if filereadable(expand("~/.vimrc_background"))
     let base16colorspace=256
     source ~/.vimrc_background
 endif
 
+set background=dark
+set t_Co=256   " This is may or may not needed.
 set timeoutlen=200
 set incsearch
 set ignorecase
@@ -139,8 +136,8 @@ let g:go_fmt_autosave = 1
 let g:jsx_ext_required = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_spell=1
-let g:airline_theme='base16_monokai'
 let g:airline_powerline_fonts=1
+let g:airline_theme='base16_eighties'
 let g:UltiSnipsExpandTrigger = "<nop>"
 let g:ulti_expand_or_jump_res = 0
 let g:ctrlp_show_hidden = 1
