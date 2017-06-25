@@ -1,4 +1,5 @@
 set nocompatible
+nmap <leader>l :lclose<CR>
 
 filetype off
 
@@ -100,19 +101,15 @@ set noruler
 set noshowcmd
 set laststatus=2
 
-nmap <leader>m :set mouse=a<CR>
-nmap <leader>M :set mouse=<CR>
 nmap <leader>n :set number<CR>
 nmap <leader>N :set nonumber<CR>
 nmap <leader>p :set paste<CR>
 nmap <leader>P :set nopaste<CR>
 nmap <leader>h :set filetype=html<CR>
 nmap <leader>H :set filetype=php<CR>
-nmap <leader>t :e<space>
 nmap <leader>c :bdelete<CR>
 nmap <leader>r :edit<CR>
-nmap <leader>o :pnext<CR>
-nmap <leader>i :pprevious<CR>
+nmap <leader>t :e<space>
 nmap <C-f> :NERDTreeToggle<CR>
 
 let g:javascript_plugin_flow = 1
@@ -120,9 +117,11 @@ let g:flow#autoclose = 1
 let g:enable_bold_font = 0
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
+let g:syntastic_aggregate_errors = 1
 let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_eslint_exec = 'eslint_d'
 let g:syntastic_typescript_checkers = ['tslint']
 let g:syntastic_php_checkers = ['phpcs']
 let g:syntastic_php_phpcs_args = '--standard=PSR2'
@@ -168,9 +167,11 @@ function! RunPHPUnitTest()
 endfunction
 
 autocmd BufNewFile,BufRead .eslintrc set filetype=json
-autocmd BufNewFile,BufRead .eslintrc.react set filetype=json
+autocmd BufNewFile,BufRead .babelrc set filetype=json
+autocmd BufNewFile,BufRead .flowconfig set filetype=json
 autocmd BufNewFile,BufRead *.json set filetype=json
 autocmd Filetype json setlocal ts=2 sts=2 sw=2
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 nnoremap <leader>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
 nnoremap <leader>R :call RunPHPUnitTest()<CR>
