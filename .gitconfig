@@ -24,6 +24,9 @@
     # a.k.a. ‘delete merged’
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 
+    # Initialize a new repository
+    start = "!git init && git commit --allow-empty -m 'Initial commit'"
+
 [merge]
 
     # Include summaries of merged commits in newly created merge commit messages
