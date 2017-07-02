@@ -186,4 +186,4 @@ gaps outer $defaultGapsOuter
 
 ## Borders
 new_window pixel 0
-NEW_FLOAT pixel 0
+new_float pixel 0
