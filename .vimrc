@@ -168,10 +168,9 @@ endfunction
 
 autocmd BufNewFile,BufRead .eslintrc set filetype=json
 autocmd BufNewFile,BufRead .babelrc set filetype=json
-autocmd BufNewFile,BufRead .flowconfig set filetype=json
 autocmd BufNewFile,BufRead *.json set filetype=json
-autocmd Filetype json setlocal ts=2 sts=2 sw=2
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+autocmd FileType json setlocal ts=2 sts=2 sw=2
+autocmd FileType * setlocal comments-=:// comments+=f://
 
 nnoremap <leader>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
 nnoremap <leader>R :call RunPHPUnitTest()<CR>
