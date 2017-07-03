@@ -1,5 +1,4 @@
 set nocompatible
-nmap <leader>l :lclose<CR>
 
 filetype off
 
