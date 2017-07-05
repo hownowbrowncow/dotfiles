@@ -22,7 +22,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'scrooloose/syntastic'
 Plugin 'editorconfig/editorconfig-vim'
 
-" Utility Plugin 'ctrlpvim/ctrlp.vim'
+" Utility
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Valloric/MatchTagAlways'
