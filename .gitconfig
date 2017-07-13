@@ -27,6 +27,12 @@
     # Initialize a new repository
     start = "!git init && git commit --allow-empty -m 'Initial commit'"
 
+    # Show diff between latest commit and current state
+    d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+    # Show only files with conflicts
+    conflict = diff --name-only --diff-filter=U
+
 [merge]
 
     # Include summaries of merged commits in newly created merge commit messages
