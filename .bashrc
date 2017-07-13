@@ -134,6 +134,10 @@ pathadd() {
     fi
 }
 
+# Copy w/ progress
+cp_p () {
+  rsync -WavP --human-readable --progress $1 $2
+}
 
 # get current branch in git repo
 function parse_git_branch() {
@@ -145,6 +149,20 @@ function parse_git_branch() {
   else
     echo ""
   fi
+}
+
+# whois a domain or a URL
+function whois() {
+	local domain=$(echo "$1" | awk -F/ '{print $3}') # get domain from URL
+	if [ -z $domain ] ; then
+		domain=$1
+	fi
+	echo "Getting whois record for: $domain …"
+
+	# avoid recursion
+	# this is the best whois server
+	# strip extra fluff
+	/usr/bin/whois -h whois.internic.net $domain | sed '/NOTICE:/q'
 }
 
 # get current status of git repo
