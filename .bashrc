@@ -1,4 +1,4 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+# ~/.bashrc: executed by bash(2) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
@@ -64,14 +64,14 @@ fi
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  alias ls='ls --color=auto'
+  #alias dir='dir --color=auto'
+  #alias vdir='vdir --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
 fi
 
 function cd() {
@@ -129,9 +129,9 @@ extract () {
 }
 
 pathadd() {
-    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-        PATH="${PATH:+"$PATH:"}$1"
-    fi
+  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+    PATH="${PATH:+"$PATH:"}$1"
+  fi
 }
 
 # Copy w/ progress
@@ -153,16 +153,16 @@ function parse_git_branch() {
 
 # whois a domain or a URL
 function whois() {
-	local domain=$(echo "$1" | awk -F/ '{print $3}') # get domain from URL
-	if [ -z $domain ] ; then
-		domain=$1
-	fi
-	echo "Getting whois record for: $domain …"
+  local domain=$(echo "$1" | awk -F/ '{print $3}') # get domain from URL
+  if [ -z $domain ] ; then
+    domain=$1
+  fi
+  echo "Getting whois record for: $domain …"
 
-	# avoid recursion
-	# this is the best whois server
-	# strip extra fluff
-	/usr/bin/whois -h whois.internic.net $domain | sed '/NOTICE:/q'
+  # avoid recursion
+  # this is the best whois server
+  # strip extra fluff
+  /usr/bin/whois -h whois.internic.net $domain | sed '/NOTICE:/q'
 }
 
 # get current status of git repo
@@ -200,7 +200,33 @@ function parse_git_dirty {
   fi
 }
 
-export PS1="\[\e[31m\]┌─╼\[\e[m\] [\h] [\w] \`parse_git_branch\`\n\[$(tput sgr0)\]\[\e[31m\]└────╼\[\e[m\] "
+function prompt_git() {
+  # this is >5x faster than mathias's.
+
+  # check if we're in a git repo. (fast)
+  git rev-parse --is-inside-work-tree &>/dev/null || return
+
+  # check for what branch we're on. (fast)
+  #   if… HEAD isn’t a symbolic ref (typical branch),
+  #   then… get a tracking remote branch or tag
+  #   otherwise… get the short SHA for the latest commit
+  #   lastly just give up.
+  branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
+    git describe --all --exact-match HEAD 2> /dev/null || \
+    git rev-parse --short HEAD 2> /dev/null || \
+    echo '(unknown)')";
+
+  # check if it's dirty (slow)
+  #   technique via github.com/git/git/blob/355d4e173/contrib/completion/git-prompt.sh#L472-L475
+  dirty=$(git diff --no-ext-diff --quiet --ignore-submodules --exit-code || echo -e "*")
+
+  [ -n "${s}" ] && s=" [${s}]";
+  echo -e "[${1}${branchName}${2}$dirty]";
+
+  return
+}
+
+export PS1="\[\e[31m\]┌─╼\[\e[m\] [\h] [\w] \`prompt_git\`\n\[$(tput sgr0)\]\[\e[31m\]└────╼\[\e[m\] "
 
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
