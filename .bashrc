@@ -74,12 +74,18 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
 fi
 
+if [ -f ~/.last_dir ]; then
+  builtin cd `cat ~/.last_dir`
+fi
+
 function cd() {
   if [ $# = 0 ]; then
     builtin cd "$HOME"
   else
     builtin cd "$@"
   fi
+
+  pwd > ~/.last_dir
 }
 
 # Go back with ..
@@ -139,18 +145,6 @@ cp_p () {
   rsync -WavP --human-readable --progress $1 $2
 }
 
-# get current branch in git repo
-function parse_git_branch() {
-  BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
-  if [ ! "${BRANCH}" == "" ]
-  then
-    STAT=`parse_git_dirty`
-    echo "[${BRANCH}${STAT}]"
-  else
-    echo ""
-  fi
-}
-
 # whois a domain or a URL
 function whois() {
   local domain=$(echo "$1" | awk -F/ '{print $3}') # get domain from URL
@@ -163,6 +157,18 @@ function whois() {
   # this is the best whois server
   # strip extra fluff
   /usr/bin/whois -h whois.internic.net $domain | sed '/NOTICE:/q'
+}
+
+# get current branch in git repo
+function parse_git_branch() {
+  BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+  if [ ! "${BRANCH}" == "" ]
+  then
+    STAT=`parse_git_dirty`
+    echo "[${BRANCH}${STAT}]"
+  else
+    echo ""
+  fi
 }
 
 # get current status of git repo
@@ -200,7 +206,7 @@ function parse_git_dirty {
   fi
 }
 
-export PS1="\[\e[31m\]┌─╼\[\e[m\] [\h] [\w] \`parse_git_dirty\`\n\[$(tput sgr0)\]\[\e[31m\]└────╼\[\e[m\] "
+export PS1="\[\e[31m\]┌─╼\[\e[m\] [\h] [\w] \`parse_git_branch\`\n\[$(tput sgr0)\]\[\e[31m\]└────╼\[\e[m\] "
 
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
