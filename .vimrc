@@ -139,7 +139,8 @@ let g:airline_theme='base16_monokai'
 let g:UltiSnipsExpandTrigger = "<nop>"
 let g:ulti_expand_or_jump_res = 0
 let g:ctrlp_show_hidden = 1
-let NERDTreeShowHidden=1
+let g:NERDTreeShowHidden=1
+let g:NERDTreeWinSize = 40
 
 " use tab/s-tab to move up and down and enter to select snippet
 " makes YouCompleteMe and UltiSnips work together better
