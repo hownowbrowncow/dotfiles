@@ -1,78 +1,82 @@
 [alias]
 
-    # List commits in short form, with colors and branch/tag annotations. 
-    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+  # List commits in short form, with colors and branch/tag annotations. 
+  ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 
-    # Graph commits, abbreviated IDS, dates relative to now, with commit refernce, colors, author of commit
-    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  # Graph commits, abbreviated IDS, dates relative to now, with commit refernce, colors, author of commit
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 
-    # View the current working tree status using the short format
-    s = status -s
+  # View the current working tree status using the short format
+  s = status -s
 
-    # Switch to a branch, creating it if necessary
-    go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+  # Switch to a branch, creating it if necessary
+  go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
 
-    # Amend the currently staged files to the latest commit
-    amend = commit --amend --reuse-message=HEAD
+  # Amend the currently staged files to the latest commit
+  amend = commit --amend --reuse-message=HEAD
 
-    # Show verbose output about tags, branches or remotes
-    tags = tag -l
-    branches = branch -a
-    remotes = remote -v
+  # Show verbose output about tags, branches or remotes
+  tags = tag -l
+  branches = branch -a
+  remotes = remote -v
 
-    # Remove branches that have already been merged with master
-    # a.k.a. ‘delete merged’
-    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+  # Remove branches that have already been merged with master
+  # a.k.a. ‘delete merged’
+  dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 
-    # Initialize a new repository
-    start = "!git init && git commit --allow-empty -m 'Initial commit'"
+  # Initialize a new repository
+  start = "!git init && git commit --allow-empty -m 'Initial commit'"
 
-    # Show diff between latest commit and current state
-    d = !"git diff-index --quiet HEAD -- || git --no-pager diff --patch-with-stat"
+  # Show diff between latest commit and current state
+  d = !"git diff-index --quiet HEAD -- || git --no-pager diff --patch-with-stat"
 
-    # Show only files with conflicts
-    conflict = diff --name-only --diff-filter=U
+  # Show only files with conflicts
+  conflict = diff --name-only --diff-filter=U
 
 [merge]
 
-    # Include summaries of merged commits in newly created merge commit messages
-    log = true
+  # Include summaries of merged commits in newly created merge commit messages
+  log = false
+
+[pull]
+
+  rebase = true
 
 [diff]
 
-    # Detect copies as well as renames
-    renames = copies
+  # Detect copies as well as renames
+  renames = copies
 
 [color]
 
-    # Use colors in Git commands that are capable of colored output when
-    # outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
-    ui = auto
+  # Use colors in Git commands that are capable of colored output when
+  # outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
+  ui = auto
 
 [color "branch"]
 
-    current = yellow reverse
-    local = yellow
-    remote = green
+  current = yellow reverse
+  local = yellow
+  remote = green
 
 [color "status"]
 
-    added = yellow
-    changed = green
-    untracked = cyan
+  added = yellow
+  changed = green
+  untracked = cyan
 
 [color "diff"]
 
-    meta = yellow bold
-    frag = magenta bold # line info
-    old = red # deletions
-    new = green # additions
+  meta = yellow bold
+  frag = magenta bold # line info
+  old = red # deletions
+  new = green # additions
 
 [user]
 
-	email = me@nickc.io
-	name = Nick C
+  email = me@nickc.io
+  name = Nick C
 
 [core]
 
-	editor = vim
+  editor = vim
