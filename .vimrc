@@ -14,6 +14,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'chriskempson/base16-vim'
 
 " Auto-completion
+Plugin 'ervandew/supertab'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
@@ -136,35 +137,20 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_spell=1
 let g:airline_powerline_fonts=1
 let g:airline_theme='base16_monokai'
-let g:UltiSnipsExpandTrigger = "<nop>"
 let g:ulti_expand_or_jump_res = 0
 let g:ctrlp_show_hidden = 1
 let g:NERDTreeShowHidden=1
 let g:NERDTreeWinSize = 40
+let delimitMate_expand_cr = 1
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<s-tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>""
 
-" use tab/s-tab to move up and down and enter to select snippet
-" makes YouCompleteMe and UltiSnips work together better
-function ExpandSnippetOrCarriageReturn()
-    let snippet = UltiSnips#ExpandSnippetOrJump()
-    if g:ulti_expand_or_jump_res > 0
-        return snippet
-    else
-        return "\<CR>"
-    endif
-endfunction
-
-inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
-
-" Run PHPUnit tests
-function! RunPHPUnitTest()
-    cd %:p:h
-    let result = system("phpunit -c " . $PHPUNIT_CONFIG . " " . bufname("%"))
-    split __PHPUnit_Result__
-    normal! ggdG
-    setlocal buftype=nofile
-    call append(0, split(result, '\v\n'))
-    cd -
-endfunction
 
 autocmd BufNewFile,BufRead .eslintrc set filetype=json
 autocmd BufNewFile,BufRead .babelrc set filetype=json
@@ -173,6 +159,5 @@ autocmd FileType json setlocal ts=2 sts=2 sw=2
 autocmd FileType * setlocal comments-=:// comments+=f://
 
 nnoremap <leader>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
-nnoremap <leader>R :call RunPHPUnitTest()<CR>
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-b> :bprevious<CR>
