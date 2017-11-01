@@ -12,6 +12,7 @@ Plugin 'edkolev/tmuxline.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'chriskempson/base16-vim'
+Plugin 'ryanoasis/vim-devicons'
 
 " Auto-completion
 Plugin 'ervandew/supertab'
@@ -19,15 +20,21 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 
-" Linting
-Plugin 'scrooloose/syntastic'
+" Linting/Formatting
 Plugin 'editorconfig/editorconfig-vim'
+Plugin 'w0rp/ale'
 
 " Utility
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Valloric/MatchTagAlways'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'benmills/vimux'
+Plugin 'tyewang/vimux-jest-test'
+
+" Php
+Plugin 'lvht/phpcd.vim'
+Plugin 'docteurklein/php-getter-setter.vim'
 
 " JavaScript
 Plugin 'pangloss/vim-javascript'
@@ -92,9 +99,6 @@ set display+=lastline
 set nobackup
 set nowb
 set noswapfile
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 set omnifunc=syntaxcomplete#Complete
 set noshowmode
 set noruler
@@ -115,21 +119,6 @@ nmap <C-f> :NERDTreeToggle<CR>
 let g:javascript_plugin_flow = 1
 let g:flow#autoclose = 1
 let g:enable_bold_font = 0
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_javascript_eslint_exec = 'eslint_d'
-let g:syntastic_typescript_checkers = ['tslint']
-let g:syntastic_php_checkers = ['phpcs']
-let g:syntastic_php_phpcs_args = '--standard=PSR2'
-let g:syntastic_c_checkers = ['gcc']
-let g:syntastic_c_include_dirs = ['/usr/local/apr/include/apr-1']
-let g:syntastic_c_cflags = '-std=c99 -Wall -pedantic'
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-let g:syntastic_mode_map = {'mode': 'active', 'passive_filetypes': ['go']}
 let g:go_fmt_fail_silently = 0
 let g:go_fmt_autosave = 1
 let g:jsx_ext_required = 0
@@ -142,22 +131,55 @@ let g:ctrlp_show_hidden = 1
 let g:NERDTreeShowHidden=1
 let g:NERDTreeWinSize = 40
 let delimitMate_expand_cr = 1
+let g:ale_php_phpcs_standard = 'PSR2'
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:ycm_autoclose_preview_window_after_insertion = 0
+let g:ycm_autoclose_preview_window_after_completion = 0
 let g:SuperTabDefaultCompletionType = '<C-n>'
+let g:SuperTabClosePreviewOnPopupClose = 1
 " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<s-tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>""
-
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<C-n>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-p>"
+let g:phpgetset_setterTemplate =
+			\ "    \n" .
+			\ "    /**\n" .
+			\ "     * Set %varname%\n" .
+			\ "     *\n" .
+			\ "     * @param type $%varname%\n" .
+			\ "     * @return $this\n" .
+			\ "     */\n" .
+			\ "    public function %funcname%($%varname%)\n" .
+			\ "    {\n" .
+			\ "        $this->%varname% = $%varname%;\n" .
+			\ "    \n" .
+			\ "        return $this;\n" .
+			\ "    }"
+let g:phpgetset_getterTemplate =
+      \ "    \n" .
+      \ "    /**\n" .
+      \ "     * Get %varname%\n" .
+      \ "     *\n" .
+      \ "     * @return type\n" .
+      \ "     */\n" .
+      \ "    public function %funcname%()\n" .
+      \ "    {\n" .
+      \ "        return $this->%varname%;\n" .
+      \ "    }"
+let g:ale_linters = {
+      \ 'typescript': ['tslint'],
+      \ 'javascript': ['eslint'],
+      \ 'php': ['phpcs'],
+\}
 
 autocmd BufNewFile,BufRead .eslintrc set filetype=json
 autocmd BufNewFile,BufRead .babelrc set filetype=json
 autocmd BufNewFile,BufRead *.json set filetype=json
+autocmd BufNewFile,BufRead *.twig set filetype=html
 autocmd FileType json setlocal ts=2 sts=2 sw=2
 autocmd FileType * setlocal comments-=:// comments+=f://
 
-nnoremap <leader>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-b> :bprevious<CR>
