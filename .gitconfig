@@ -33,6 +33,9 @@
   # Show only files with conflicts
   conflict = diff --name-only --diff-filter=U
 
+  # show addition/deletion stats
+  stats = diff --shortstat
+
 [merge]
 
   # Include summaries of merged commits in newly created merge commit messages
@@ -74,9 +77,9 @@
 
 [user]
 
-  email = me@nickc.io
-  name = Nick C
+  email =
+	name = Nick Coffey
 
 [core]
 
-  editor = vim
+	editor = vim

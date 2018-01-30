@@ -12,7 +12,6 @@ Plugin 'edkolev/tmuxline.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'chriskempson/base16-vim'
-Plugin 'ryanoasis/vim-devicons'
 
 " Auto-completion
 Plugin 'ervandew/supertab'
@@ -62,7 +61,7 @@ filetype plugin on
 filetype indent on
 
 if has('mouse')
-    set mouse=a
+  set mouse=a
 endif
 
 syntax on
@@ -71,8 +70,8 @@ syntax enable
 let mapleader = ','
 
 if filereadable(expand("~/.vimrc_background"))
-    let base16colorspace=256
-    source ~/.vimrc_background
+  let base16colorspace=256
+  source ~/.vimrc_background
 endif
 
 set background=dark
@@ -124,7 +123,7 @@ let g:go_fmt_autosave = 1
 let g:jsx_ext_required = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_spell=1
-let g:airline_powerline_fonts=1
+let g:airline_powerline_fonts=0
 let g:airline_theme='base16_monokai'
 let g:ulti_expand_or_jump_res = 0
 let g:ctrlp_show_hidden = 1
@@ -132,6 +131,7 @@ let g:NERDTreeShowHidden=1
 let g:NERDTreeWinSize = 40
 let delimitMate_expand_cr = 1
 let g:ale_php_phpcs_standard = 'PSR2'
+" let g:ale_javascript_eslint_options = ''
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
@@ -144,19 +144,19 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<C-n>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-p>"
 let g:phpgetset_setterTemplate =
-			\ "    \n" .
-			\ "    /**\n" .
-			\ "     * Set %varname%\n" .
-			\ "     *\n" .
-			\ "     * @param type $%varname%\n" .
-			\ "     * @return $this\n" .
-			\ "     */\n" .
-			\ "    public function %funcname%($%varname%)\n" .
-			\ "    {\n" .
-			\ "        $this->%varname% = $%varname%;\n" .
-			\ "    \n" .
-			\ "        return $this;\n" .
-			\ "    }"
+      \ "    \n" .
+      \ "    /**\n" .
+      \ "     * Set %varname%\n" .
+      \ "     *\n" .
+      \ "     * @param type $%varname%\n" .
+      \ "     * @return $this\n" .
+      \ "     */\n" .
+      \ "    public function %funcname%($%varname%)\n" .
+      \ "    {\n" .
+      \ "        $this->%varname% = $%varname%;\n" .
+      \ "    \n" .
+      \ "        return $this;\n" .
+      \ "    }"
 let g:phpgetset_getterTemplate =
       \ "    \n" .
       \ "    /**\n" .
@@ -172,7 +172,7 @@ let g:ale_linters = {
       \ 'typescript': ['tslint'],
       \ 'javascript': ['eslint'],
       \ 'php': ['phpcs'],
-\}
+      \}
 
 autocmd BufNewFile,BufRead .eslintrc set filetype=json
 autocmd BufNewFile,BufRead .babelrc set filetype=json

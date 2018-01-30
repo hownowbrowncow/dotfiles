@@ -74,18 +74,12 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
 fi
 
-if [ -f ~/.last_dir ]; then
-  builtin cd `cat ~/.last_dir`
-fi
-
 function cd() {
   if [ $# = 0 ]; then
     builtin cd "$HOME"
   else
     builtin cd "$@"
   fi
-
-  pwd > ~/.last_dir
 }
 
 # Go back with ..
@@ -210,5 +204,3 @@ export PS1="\[\e[31m\]┌─╼\[\e[m\] [\h] [\w] \`parse_git_branch\`\n\[$(tput
 
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-
-pathadd /home/optimus/.composer/vendor/bin

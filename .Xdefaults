@@ -1,6 +1,6 @@
-URxvt.font:xft:hack:pixelsize=12
-URxvt.italicfont:xft:hack:pixelsize=12
-URxvt.boldFont:xft:hack:pizelsize=12
+URxvt.font: xft:Hack-Regular:pixelsize=12
+URxvt.italicfont: xft:Hack-Regular:pixelsize=12
+URxvt.boldFont: xft:Hack-Regular:pizelsize=12
 URxvt.letterSpace: -1
 URxvt.scrollBar: false
 
@@ -8,7 +8,7 @@ URxvt.foreground: #a6a28c
 URxvt.background: #20201D
 URxvt.cursorColor: #a6a28c
 
-URxvt.color0: #F92672 
+URxvt.color0: #F92672
 URxvt.color1: #D73737
 URxvt.color2: #60AC39
 URxvt.color3: #AE9513
