@@ -74,6 +74,8 @@ if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
 endif
 
+set undofile
+set undodir=~/.vim/undo
 set background=dark
 set t_Co=256   " This is may or may not needed.
 set timeoutlen=200
@@ -131,6 +133,7 @@ let g:NERDTreeShowHidden=1
 let g:NERDTreeWinSize = 40
 let delimitMate_expand_cr = 1
 let g:ale_php_phpcs_standard = 'PSR2'
+let g:ale_scss_stylelint_options = '--custom-syntax postcss-scss'
 " let g:ale_javascript_eslint_options = ''
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -171,11 +174,14 @@ let g:phpgetset_getterTemplate =
 let g:ale_linters = {
       \ 'typescript': ['tslint'],
       \ 'javascript': ['eslint'],
+      \ 'scss': ['stylelint'],
       \ 'php': ['phpcs'],
       \}
 
 autocmd BufNewFile,BufRead .eslintrc set filetype=json
 autocmd BufNewFile,BufRead .babelrc set filetype=json
+autocmd BufNewFile,BufRead .stylelintrc set filetype=json
+autocmd BufNewFile,BufRead .editorconfig set filetype=json
 autocmd BufNewFile,BufRead *.json set filetype=json
 autocmd BufNewFile,BufRead *.twig set filetype=html
 autocmd FileType json setlocal ts=2 sts=2 sw=2
