@@ -203,4 +203,5 @@ function parse_git_dirty {
 export PS1="\[\e[31m\]┌─╼\[\e[m\] [\h] [\w] \`parse_git_branch\`\n\[$(tput sgr0)\]\[\e[31m\]└────╼\[\e[m\] "
 
 BASE16_SHELL=$HOME/.config/base16-shell/
+
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"

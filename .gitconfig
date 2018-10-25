@@ -36,6 +36,15 @@
   # show addition/deletion stats
   stats = diff --shortstat
 
+  # creates local branch of PR/$1 from upstream|origin or $2
+  pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
+
+  # removes all PR branches
+  pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
+
+  # Delete local and remote branch
+  nuke = !sh -c 'git branch -D $1 && git push origin :$1' -
+
 [merge]
 
   # Include summaries of merged commits in newly created merge commit messages
@@ -77,8 +86,7 @@
 
 [user]
 
-  email =
-	name = Nick Coffey
+	name = Nick C
 
 [core]
 

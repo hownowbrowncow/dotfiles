@@ -26,10 +26,12 @@ Plugin 'w0rp/ale'
 " Utility
 Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdcommenter'
 Plugin 'Valloric/MatchTagAlways'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'benmills/vimux'
 Plugin 'tyewang/vimux-jest-test'
+Plugin 'geekjuice/vim-mocha'
 
 " Php
 Plugin 'lvht/phpcd.vim'
@@ -114,7 +116,10 @@ nmap <leader>h :set filetype=html<CR>
 nmap <leader>H :set filetype=php<CR>
 nmap <leader>c :bdelete<CR>
 nmap <leader>r :edit<CR>
-nmap <leader>t :e<space>
+nmap <Leader>t :call RunCurrentSpecFile()<CR>
+nmap <Leader>s :call RunNearestSpec()<CR>
+nmap <Leader>l :call RunLastSpec()<CR>
+nmap <Leader>a :call RunAllSpecs()<CR>
 nmap <C-f> :NERDTreeToggle<CR>
 
 let g:javascript_plugin_flow = 1
@@ -131,6 +136,8 @@ let g:ulti_expand_or_jump_res = 0
 let g:ctrlp_show_hidden = 1
 let g:NERDTreeShowHidden=1
 let g:NERDTreeWinSize = 40
+let g:NERDSpaceDelims = 1
+let g:NERDDefaultAlign = 'left'
 let delimitMate_expand_cr = 1
 let g:ale_php_phpcs_standard = 'PSR2'
 let g:ale_scss_stylelint_options = '--custom-syntax postcss-scss'
