@@ -21,6 +21,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'Raimondi/delimitMate'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ap/vim-buftabline'
+Plug 'mileszs/ack.vim'
 
 " TypeScript
 Plug 'leafgarland/typescript-vim'
@@ -28,6 +29,10 @@ Plug 'leafgarland/typescript-vim'
 " Javascript
 Plug 'pangloss/vim-javascript'
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'storyn26383/vim-vue'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 " *SS
 Plug 'JulesWang/css.vim'
@@ -102,6 +107,7 @@ set nowb
 set noswapfile
 
 set omnifunc=syntaxcomplete#Complete
+set completeopt-=preview
 
 " Number mode
 nmap <leader>n :set number<CR>
@@ -118,6 +124,8 @@ nmap <C-b> :bprevious<CR>
 
 " NERDTree toggle
 nmap <C-f> :NERDTreeToggle<CR>
+
+let g:ackprg = 'ag --nogroup --nocolor --column'
 
 let g:ctrlp_show_hidden=1
 
@@ -139,5 +147,41 @@ let g:ale_linters={
   \ 'php': ['phpcs'],
 \}
 
+let g:ctrlp_max_files=20000
+let g:ctrlp_working_path_mode = 0
+
 " Set filetypes for non-standard files
 autocmd BufNewFile,BufRead .eslintrc,.babelrc,.stylelintrc set filetype=json
+
+" Find file in current directory and edit it.
+function! Find(name)
+  let l:list=system("find . -name '".a:name."' | perl -ne 'print \"$.\\t$_\"'")
+	" replace above line with below one for gvim on windows
+	" let l:list=system("find . -name ".a:name." | perl -ne \"print qq{$.\\t$_}\"")
+  let l:num=strlen(substitute(l:list, "[^\n]", "", "g"))
+  if l:num < 1
+    echo "'".a:name."' not found"
+    return
+  endif
+  if l:num != 1
+    echo l:list
+    let l:input=input("Which ? (CR=nothing)\n")
+    if strlen(l:input)==0
+      return
+    endif
+    if strlen(substitute(l:input, "[0-9]", "", "g"))>0
+      echo "Not a number"
+      return
+    endif
+    if l:input<1 || l:input>l:num
+      echo "Out of range"
+      return
+    endif
+    let l:line=matchstr("\n".l:list, "\n".l:input."\t[^\n]*")
+  else
+    let l:line=l:list
+  endif
+  let l:line=substitute(l:line, "^[^\t]*\t./", "", "")
+  execute ":e ".l:line
+endfunction
+command! -nargs=1 Find :call Find("<args>")
