@@ -86,8 +86,8 @@
 
 [user]
 
-	name = Nick C
+  name = Nick C
 
 [core]
 
-	editor = vim
+  editor = vim
