@@ -34,6 +34,10 @@ Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
+" PHP
+Plug 'nelsyeung/twig.vim'
+Plug 'jwalton512/vim-blade'
+
 " *SS
 Plug 'JulesWang/css.vim'
 Plug 'groenewege/vim-less'
@@ -125,6 +129,8 @@ nmap <C-b> :bprevious<CR>
 " NERDTree toggle
 nmap <C-f> :NERDTreeToggle<CR>
 
+let g:PHP_vintage_case_default_indent=1
+
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
 let g:ctrlp_show_hidden=1
@@ -149,6 +155,7 @@ let g:ale_linters={
 
 let g:ctrlp_max_files=20000
 let g:ctrlp_working_path_mode = 0
+let g:ctrlp_custom_ignore = 'node_modules\|vendor\|git'
 
 " Set filetypes for non-standard files
 autocmd BufNewFile,BufRead .eslintrc,.babelrc,.stylelintrc set filetype=json
