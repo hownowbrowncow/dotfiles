@@ -129,7 +129,7 @@ nmap <C-b> :bprevious<CR>
 " NERDTree toggle
 nmap <C-f> :NERDTreeToggle<CR>
 
-let g:PHP_vintage_case_default_indent=1
+let g:PHP_vintage_case_default_indent=0
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
