@@ -13,7 +13,8 @@ Plug 'othree/javascript-libraries-syntax.vim'
 
 " Linting/Formatting
 Plug 'editorconfig/editorconfig-vim'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
+Plug 'maximbaz/lightline-ale'
 
 " Utility
 Plug 'scrooloose/nerdtree'
@@ -22,6 +23,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ap/vim-buftabline'
 Plug 'mileszs/ack.vim'
+Plug 'romainl/vim-qf'
 
 " TypeScript
 Plug 'leafgarland/typescript-vim'
@@ -63,6 +65,7 @@ if filereadable(expand("~/.vimrc_background"))
 endif
 
 set encoding=utf-8
+set backspace=indent,eol,start
 
 " Undo
 set undofile
@@ -91,8 +94,8 @@ set scrolloff=10
 set autoindent
 set smartindent
 set smarttab
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set expandtab
 
 " Visual
@@ -144,10 +147,15 @@ let delimitMate_expand_cr=1
 
 let g:UltiSnipsExpandTrigger="<C-j>"
 
+let g:qf_auto_quit = 0
+
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+let g:ale_open_list = 1
 let g:ale_php_phpcs_standard = 'PSR2'
 let g:ale_scss_stylelint_options = '--custom-syntax postcss-scss'
 let g:ale_linters={
-  \ 'typescript': ['tslint'],
+  \ 'typescript': ['eslint'],
   \ 'javascript': ['eslint'],
   \ 'scss': ['stylelint'],
   \ 'php': ['phpcs'],
@@ -157,38 +165,10 @@ let g:ctrlp_max_files=20000
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_custom_ignore = 'node_modules\|vendor\|git'
 
+hi Error term=standout ctermfg=3 ctermbg=18 guifg=#f4bf75 guibg=#383830
+hi SpellBad term=standout ctermfg=3 ctermbg=18 guifg=#f4bf75 guibg=#383830
+
 " Set filetypes for non-standard files
 autocmd BufNewFile,BufRead .eslintrc,.babelrc,.stylelintrc set filetype=json
-
-" Find file in current directory and edit it.
-function! Find(name)
-  let l:list=system("find . -name '".a:name."' | perl -ne 'print \"$.\\t$_\"'")
-	" replace above line with below one for gvim on windows
-	" let l:list=system("find . -name ".a:name." | perl -ne \"print qq{$.\\t$_}\"")
-  let l:num=strlen(substitute(l:list, "[^\n]", "", "g"))
-  if l:num < 1
-    echo "'".a:name."' not found"
-    return
-  endif
-  if l:num != 1
-    echo l:list
-    let l:input=input("Which ? (CR=nothing)\n")
-    if strlen(l:input)==0
-      return
-    endif
-    if strlen(substitute(l:input, "[0-9]", "", "g"))>0
-      echo "Not a number"
-      return
-    endif
-    if l:input<1 || l:input>l:num
-      echo "Out of range"
-      return
-    endif
-    let l:line=matchstr("\n".l:list, "\n".l:input."\t[^\n]*")
-  else
-    let l:line=l:list
-  endif
-  let l:line=substitute(l:line, "^[^\t]*\t./", "", "")
-  execute ":e ".l:line
-endfunction
-command! -nargs=1 Find :call Find("<args>")
+" Wrap long errors in qf (lint) window
+autocmd FileType qf setlocal wrap
