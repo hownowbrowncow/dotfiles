@@ -23,6 +23,7 @@ Plug 'yuezk/vim-js'
 Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/jsonc.vim'
 
 " Python
 Plug 'janko/vim-test'
@@ -52,6 +53,7 @@ if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
 endif
 
+set nocompatible
 set sessionoptions+=globals
 set encoding=utf-8
 set backspace=indent,eol,start

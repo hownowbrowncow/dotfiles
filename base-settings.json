@@ -1,11 +1,31 @@
 {
-  "coc.preferences.rootPatterns": ["/Users/nick/src/web-pro/packages/pro2"],
+  "coc.preferences.bracketEnterImprove": true,
+  "coc.preferences.formatOnType": false,
+  "coc.preferences.rootPatterns": [
+    "/Users/nick/src/web-pro/packages/pro2"
+  ],
   "eslint.enable": false,
   "json.enable": true,
+  "json.format.enable": true,
+  "list.source.grep.command": "ag",
+  "list.source.tags.command": "uctags",
+  "pairs.enableBackspace": true,
+  "pairs.enableCharacters": [
+    "(",
+    "[",
+    "{",
+    "<",
+    "'",
+    "`",
+    "\""
+  ],
+  "prettier.stylelintIntegration": true,
+  "prettier.onlyUseLocalVersion": true,
+  "session.directory": "/Users/nick/.vim/sessions",
   "tsserver.enable": false,
   "tsserver.locale": "/Users/nick/.config/yarn/global/node_modules/.bin/tsserver",
   "tsserver.log": "normal",
   "tsserver.npm": "/Users/nick/.config/node/n/versions/node/12.16.3/bin/npm",
-  "tsserver.trace.server": "verbose",
+  "tsserver.trace.server": "messages",
   "tsserver.tsdk": "/Users/nick/.config/yarn/global/node_modules/typescript/lib/tsserver.js"
 }
