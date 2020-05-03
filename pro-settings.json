@@ -1,0 +1,37 @@
+{
+  "eslint.autoFix": false,
+  "eslint.enable": true,
+  "eslint.filetypes": [".tsx", ".ts", ".jsx", "js"],
+  "eslint.nodePath": "/Users/nick/.config/node/n/versions/node/10.16.3/bin/node",
+  "eslint.packageManager": "yarn",
+  "eslint.run": "onSave",
+  "languageserver": {
+    "tsserver": {
+      "filetypes": ["ts", "tsx", "js", "jsx", "d.ts"],
+      "module": "~",
+      "rootPatterns": ["tsconfig.json", "src"]
+    }
+  },
+  "json.enable": true,
+  "json.format.enable": true,
+  "npm.binPath": "/Users/nick/.config/node/n/versions/node/10.16.3/bin/npm",
+  "tsserver.enable": true,
+  "tsserver.enableJavascript": true,
+  "tsserver.locale": "/Users/nick/src/web-pro/packages/pro2/node_modules/typescript/bin/tsserver",
+  "tsserver.npm": "/Users/nick/.config/node/n/versions/node/10.16.3/bin/npm",
+  "tsserver.tsdk": "/Users/nick/src/web-pro/packages/pro2/node_modules/typescript/lib/tsserver.js",
+  "tsserver.typingsCacheLocation": "./types",
+  "tsserver.disableAutomaticTypeAcquisition": true,
+  "tsserver.useBatchedBufferSync": true,
+  "typescript.format.enabled": true,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": true,
+  "typescript.format.semicolons": "remove",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifierEnding": "minimal",
+  "typescript.preferences.quoteStyle": "auto",
+  "typescript.suggest.autoImports": true,
+  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.suggest.includeAutomaticOptionalChainCompletions": true
+}

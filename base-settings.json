@@ -1,0 +1,11 @@
+{
+  "coc.preferences.rootPatterns": ["/Users/nick/src/web-pro/packages/pro2"],
+  "eslint.enable": false,
+  "json.enable": true,
+  "tsserver.enable": false,
+  "tsserver.locale": "/Users/nick/.config/yarn/global/node_modules/.bin/tsserver",
+  "tsserver.log": "normal",
+  "tsserver.npm": "/Users/nick/.config/node/n/versions/node/12.16.3/bin/npm",
+  "tsserver.trace.server": "verbose",
+  "tsserver.tsdk": "/Users/nick/.config/yarn/global/node_modules/typescript/lib/tsserver.js"
+}
