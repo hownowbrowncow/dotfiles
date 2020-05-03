@@ -7,16 +7,13 @@ Plug 'chriskempson/base16-vim'
 
 " Linting/Formatting
 Plug 'editorconfig/editorconfig-vim'
-Plug 'dense-analysis/ale'
-Plug 'maximbaz/lightline-ale'
 
 " Utility
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/nerdcommenter'
-Plug 'Raimondi/delimitMate'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'ap/vim-buftabline'
 Plug 'mileszs/ack.vim'
+Plug 'ap/vim-buftabline'
+Plug 'preservim/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tpope/vim-fugitive'
 
 " js/ts/jsx/tsx
 Plug 'prettier/vim-prettier', {
@@ -25,7 +22,7 @@ Plug 'prettier/vim-prettier', {
 Plug 'yuezk/vim-js'
 Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 
 " Python
 Plug 'janko/vim-test'
@@ -55,8 +52,10 @@ if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
 endif
 
+set sessionoptions+=globals
 set encoding=utf-8
 set backspace=indent,eol,start
+set nofoldenable
 
 " Undo
 set undofile
@@ -110,6 +109,7 @@ set updatetime=300
 set shortmess+=c
 set signcolumn=yes
 
+
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
@@ -117,7 +117,8 @@ inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>
+
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -129,13 +130,14 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+" <cr> could be remapped by other vim plugin
 if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <expr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u"
 else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <expr> pumvisible() ? "\<C-y>" : "\<C-g>u"
 endif
 
+inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -210,16 +212,20 @@ function! CocCurrentFunction()
 endfunction
 
 let g:lightline = {
-			\ 'colorscheme': 'PaperColor_dark',
-			\ 'active': {
-			\   'left': [ [ 'mode', 'paste' ],
-			\             [ 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ]
-			\ },
-			\ 'component_function': {
-			\   'cocstatus': 'coc#status',
-			\   'currentfunction': 'CocCurrentFunction'
-			\ },
-			\ }
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ],
+      \
+      \   'right': [ [ 'lineinfo' ],
+      \              [ 'percent' ],
+      \              [ 'fileformat', 'gitstatus' ] ]
+      \ },
+      \ 'component_function': {
+      \   'cocstatus': 'coc#status',
+      \   'currentfunction': 'CocCurrentFunction',
+      \   'gitstatus': 'FugitiveStatusline',
+      \ },
+      \ }
 
 " Mappings using CoCList:
 " Show all diagnostics.
@@ -248,52 +254,61 @@ nmap <leader>p :set paste<CR>
 nmap <leader>P :set nopaste<CR>
 
 " Buffers
-nmap <leader>c :bdelete<CR>
-nmap <C-n> :bnext<CR>
-nmap <C-b> :bprevious<CR>
+nmap <S-C> :bdelete<CR>
+nmap <S-N> :bnext<CR>
+nmap <S-B> :bprevious<CR>
 
 " NERDTree toggle
 nmap <C-f> :NERDTreeToggle<CR>
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
+let g:coc_node_path='/Users/nick/.config/node/n/versions/node/12.16.3/bin/node'
+let g:coc_data_home='/Users/nick/.config/coc'
+
 let g:NERDTreeShowHidden=1
 let g:NERDTreeWinSize=40
 let g:NERDSpaceDelims=1
 let g:NERDDefaultAlign='left'
-
-let g:yats_host_keyword = 1
-
-let delimitMate_expand_cr=0
-
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 0
-let g:ale_open_list = 0
-let g:ale_scss_stylelint_options = '--custom-syntax postcss-scss'
-let g:ale_linters={'scss': ['stylelint']}
-let g:ale_fixers = {
-      \    'vue': ['eslint'],
-      \    'scss': ['prettier'],
-      \    'html': ['prettier']
-      \}
-let g:ale_fix_on_save = 0
+let g:NERDTreeMinimalUI=1
 
 let g:ctrlp_show_hidden=1
 let g:ctrlp_max_files=20000
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_custom_ignore = 'node_modules\|vendor\|git'
 
-let g:tmuxline_preset = 'nightly_fox'
-let g:tmuxline_preset = 'full'
-let g:tmuxline_preset = 'tmux'
+let g:tmuxline_preset = {
+      \'a'    : '#S',
+      \'c'    : ['#(whoami)', '#(uptime | cut -d " " -f 1,2,3)'],
+      \'win'  : ['#I', '#W'],
+      \'cwin' : ['#I', '#W', '#F'],
+      \'x'    : '#(date)',
+      \'y'    : ['%R', '%a', '%Y'],
+      \'z'    : '#H'}
 
 " Set filetypes for non-standard files
 autocmd BufNewFile,BufRead .eslintrc,.babelrc,.stylelintrc set filetype=json
-autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 " Better css autocomplete
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS noci
 autocmd FileType scss setlocal omnifunc=csscomplete#CompleteCSS noci
 autocmd FileType json syntax match Comment +\/\/.\+$+
+autocmd FileType markdown let b:coc_pairs_disabled = ['`']
+autocmd BufEnter * if bufname('#') =~# "^NERD_tree_" && winnr('$') > 1 | b# | endif
+
+let g:NERDTreeIndicatorMapCustom = {
+      \ "Modified"  : "~",
+      \ "Staged"    : "+",
+      \ "Untracked" : "-",
+      \ "Renamed"   : "s",
+      \ "Unmerged"  : "=",
+      \ "Deleted"   : "x",
+      \ "Dirty"     : "d",
+      \ "Clean"     : "✔︎",
+      \ 'Ignored'   : "i",
+      \ "Unknown"   : "?"
+      \ }
 
 hi clear Spellbad
 hi clear Error
