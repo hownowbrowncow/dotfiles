@@ -1,9 +1,10 @@
 call plug#begin('~/.vim/plugged')
 
-" Themes
-Plug 'edkolev/tmuxline.vim'
+" Theme
 Plug 'itchyny/lightline.vim'
+Plug 'edkolev/tmuxline.vim'
 Plug 'chriskempson/base16-vim'
+Plug 'mike-hearn/base16-vim-lightline'
 
 " Linting/Formatting
 Plug 'editorconfig/editorconfig-vim'
@@ -13,8 +14,12 @@ Plug 'mileszs/ack.vim'
 Plug 'ap/vim-buftabline'
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 
+
+" js/ts
 Plug 'yuezk/vim-js'
 Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
@@ -45,6 +50,9 @@ if has('mouse')
 endif
 
 if filereadable(expand("~/.vimrc_background"))
+	set termguicolors
+	let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+	let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   let base16colorspace=256
   source ~/.vimrc_background
 endif
@@ -107,12 +115,6 @@ set updatetime=300
 set shortmess+=c
 set signcolumn=yes
 
-" Use tab for trigger completion with characters ahead and navigate.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -127,74 +129,15 @@ function! s:show_documentation()
   endif
 endfunction
 
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-function! CocCurrentFunction()
-    return get(b:, 'coc_current_function', '')
-endfunction
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
+" Use tab for trigger completion with characters ahead and navigate.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>
 inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-" GoTo code navigation.
-nmap <silent> <S-Q> <Plug>(coc-definition)
-nmap <silent> <S-W> <Plug>(coc-type-definition)
-nmap <silent> <S-E> <Plug>(coc-implementation)
-nmap <silent> <S-R> <Plug>(coc-references)
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-" Remap keys for applying codeAction to the current line.
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
-" Introduce function text object
-xmap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap if <Plug>(coc-funcobj-i)
-omap af <Plug>(coc-funcobj-a)
-" Use <TAB> for selections ranges.
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-" map prettier to coc-format
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
-let g:lightline = {
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ],
-      \
-      \   'right': [ [ 'lineinfo' ],
-      \              [ 'percent' ],
-      \              [ 'fileformat', 'gitstatus' ] ]
-      \ },
-      \ 'component_function': {
-      \   'cocstatus': 'coc#status',
-      \   'currentfunction': 'CocCurrentFunction',
-      \   'gitstatus': 'FugitiveStatusline',
-      \ },
-      \ }
-
 " Mappings using CoCList:
 " Show all diagnostics.
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
@@ -206,25 +149,37 @@ nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
 nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+" Use <TAB> for selections ranges.
+nmap <silent> <TAB> <Plug>(coc-range-select)
+nmap <silent> <S-P> <Plug>(coc-refactor)
+xmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <S-P> <Plug>(coc-refactor)
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" GoTo code navigation.
+nmap <silent> <S-Q> <Plug>(coc-definition)
+nmap <silent> <S-W> <Plug>(coc-type-definition)
+nmap <silent> <S-E> <Plug>(coc-implementation)
+nmap <silent> <S-R> <Plug>(coc-references)
 " Number mode
 nmap <leader>n :set number<CR>
 nmap <leader>N :set nonumber<CR>
-
 " Copy/Paste
 nmap <leader>p :set paste<CR>
-nmap <leader>P :set nopaste<CR>
-
+nmap <S-F> :set nopaste<CR>
 " Buffers
 nmap <S-C> :bdelete<CR>
 nmap <S-N> :bnext<CR>
 nmap <S-B> :bprevious<CR>
-
 " NERDTree toggle
 nmap <C-f> :NERDTreeToggle<CR>
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
+let g:coc_start_at_startup=1
 let g:coc_node_path='/Users/nick/.config/node/n/versions/node/12.16.3/bin/node'
 let g:coc_data_home='/Users/nick/.config/coc'
 
@@ -234,6 +189,12 @@ let g:NERDSpaceDelims=1
 let g:NERDDefaultAlign='left'
 let g:NERDTreeMinimalUI=1
 
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+" map prettier to coc-format
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--info=inline']}), <bang>0)
 " Set filetypes for non-standard files
 autocmd BufNewFile,BufRead .eslintrc,.babelrc,.stylelintrc set filetype=json
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
@@ -242,28 +203,114 @@ autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 autocmd FileType json syntax match Comment +\/\/.\+$+
 autocmd FileType markdown let b:coc_pairs_disabled = ['`']
 autocmd BufEnter * if bufname('#') =~# "^NERD_tree_" && winnr('$') > 1 | b# | endif
+autocmd User CocDiagnosticChange call lightline#update()
+
+function! LightlineFugitive()
+  if exists('*FugitiveHead')
+    let branch = FugitiveHead()
+    return branch !=# '' ? branch : ''
+  endif
+  return 'no branch detected'
+endfunction
+
+function! CocLineError() abort
+  let info = get(b:, 'coc_diagnostic_info', {})
+  if empty(info) | return ''| endif
+
+  if (get(info, 'error', 0) == 0)
+    return ''
+  endif
+
+  return 'E: ' . get(info, 'error', 0)
+endfunction
+
+function! CocLineInfo() abort
+  let info = get(b:, 'coc_diagnostic_info', {})
+  if empty(info) | return ''| endif
+
+  if (get(info, 'information', 0) == 0)
+    return ''
+  endif
+
+  return 'I: ' . get(info, 'information', 0)
+endfunction
+
+function! CocLineWarn() abort
+  let info = get(b:, 'coc_diagnostic_info', {})
+  if empty(info) | return ''| endif
+
+  if (get(info, 'warning', 0) == 0)
+    return ''
+  endif
+
+  return 'W: ' . get(info, 'warning', 0)
+endfunction
+
+function! CocLineStatus() abort
+  let status = get(g:, 'coc_status', 0)
+  if empty(status) | return '' | endif
+
+  return status
+endfunction
+
+let g:lightline = {
+  \ 'colorscheme': 'monokai',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ], [ 'cocstatus', 'readonly', 'filename' ], [ 'cocerror', 'cocwarn', 'cocinfo' ] ],
+  \   'right': [ [ 'fileformat', 'fileencoding', 'filetype' ], [ 'branch' ] ],
+  \   },
+  \ 'component_expand': {
+  \   'cocerror': 'CocLineError',
+  \   'cocwarn': 'CocLineWarn',
+  \   },
+  \  'component_type': {
+  \    'cocerror': 'error',
+  \    'cocwarn': 'warning',
+  \   },
+  \ 'component_function': {
+  \   'cocinfo': 'CocLineInfo',
+  \   'cocstatus': 'CocLineStatus',
+  \   'branch': 'LightlineFugitive',
+  \   },
+  \ }
 
 let g:tmuxline_preset = {
-      \'a'    : '#S',
-      \'c'    : ['#(whoami)', '#(uptime | cut -d " " -f 1,2,3)'],
-      \'win'  : ['#I', '#W'],
-      \'cwin' : ['#I', '#W', '#F'],
-      \'x'    : '#(date)',
-      \'y'    : ['%R', '%a', '%Y'],
-      \'z'    : '#H'}
+  \'a': '#S',
+  \'c': ['#(whoami)', '#(uptime | cut -d " " -f 1,2,3)'],
+  \'win': ['#I', '#W'],
+  \'cwin': ['#I', '#W', '#F'],
+  \'x': '#(date)',
+  \'y': ['%R', '%a', '%Y'],
+  \'z': '#H'
+  \}
 
 let g:NERDTreeIndicatorMapCustom = {
-      \ "Modified"  : "~",
-      \ "Staged"    : "+",
-      \ "Untracked" : "-",
-      \ "Renamed"   : "s",
-      \ "Unmerged"  : "=",
-      \ "Deleted"   : "x",
-      \ "Dirty"     : "d",
-      \ "Clean"     : "✔︎",
-      \ 'Ignored'   : "i",
-      \ "Unknown"   : "?"
-      \ }
+  \ "Modified": "~",
+  \ "Staged": "+",
+  \ "Untracked": "-",
+  \ "Renamed": "s",
+  \ "Unmerged": "=",
+  \ "Deleted": "x",
+  \ "Dirty": "d",
+  \ "Clean" : "✔︎",
+  \ 'Ignored': "i",
+  \ "Unknown": "?"
+  \ }
+let g:fzf_colors = {
+  \ 'fg': ['fg', 'Normal'],
+  \ 'bg': ['bg', 'Normal'],
+  \ 'hl': ['fg', 'Comment'],
+  \ 'fg+': ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+': ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+': ['fg', 'Statement'],
+  \ 'info': ['fg', 'PreProc'],
+  \ 'border': ['bg', 'Repeat'],
+  \ 'prompt': ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker': ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header': ['bg', 'Comment']
+  \}
 
 hi clear Spellbad
 hi clear Error
@@ -271,4 +318,4 @@ hi clear Ignore
 
 hi Error term=underline cterm=underline ctermfg=1 gui=underline guifg=#EC5F67
 hi Ignore ctermfg=3 guifg=#FFCC00
-hi Spellbad ctermfg=3 guifg=#FFCC00
+hi Spellbad ctermfg=4 guifg=#FFCC00
