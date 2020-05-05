@@ -115,12 +115,6 @@ set updatetime=300
 set shortmess+=c
 set signcolumn=yes
 
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
@@ -129,13 +123,6 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Use tab for trigger completion with characters ahead and navigate.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>
-inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 " Mappings using CoCList:
@@ -193,8 +180,14 @@ let g:NERDTreeMinimalUI=1
 command! -nargs=0 Format :call CocAction('format')
 " map prettier to coc-format
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
-command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--info=inline']}), <bang>0)
+command! -complete=dir FzfSrc
+  \ call fzf#vim#files(getcwd().'/src', fzf#vim#with_preview({'dir': getcwd().'/src', 'options': ['--info=inline']}), <bang>0)
+command! -complete=dir FzfRoot
+  \ call fzf#vim#files(getcwd(), fzf#vim#with_preview({'dir': getcwd(), 'options': ['--info=inline']}), <bang>0)
+
+nnoremap <C-g> :FzfSrc<cr>
+nnoremap <C-a> :FzfRoot<cr>
+
 " Set filetypes for non-standard files
 autocmd BufNewFile,BufRead .eslintrc,.babelrc,.stylelintrc set filetype=json
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
@@ -202,7 +195,6 @@ autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 " Better css autocomplete
 autocmd FileType json syntax match Comment +\/\/.\+$+
 autocmd FileType markdown let b:coc_pairs_disabled = ['`']
-autocmd BufEnter * if bufname('#') =~# "^NERD_tree_" && winnr('$') > 1 | b# | endif
 autocmd User CocDiagnosticChange call lightline#update()
 
 function! LightlineFugitive()
