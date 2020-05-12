@@ -1,0 +1,33 @@
+{
+  "coc.preferences.extensionUpdateCheck": "never",
+  "coc.preferences.rootPatterns": ["tsconfig.json"],
+  "css.enable": false,
+  "css.validate": false,
+  "scss.validate": false,
+  "less.validate": false,
+  "diagnostic.checkCurrentLine": true,
+  "eslint.autoFix": false,
+  "json.trace.server": "messages",
+  "npm.binPath": "yarn",
+  "prettier.requireConfig": true,
+  "snippets.priority": 89,
+  "snippets.enableStatusItem": false,
+  "snippets.loadFromExtensions": false,
+  "snippets.userSnippetsDirectory": "/Users/nick/.config/snippets",
+  "snippets.ultisnips.enable": false,
+  "snippets.textmateSnippetsRoots": ["/Users/nick/.config/snippets"],
+  "snippets.ultisnips.usePythonx": false,
+  "snippets.extends": {
+    "typescript": ["typescriptreact", "javascript", "javascriptreact"],
+    "typescriptreact": ["typescript", "javascript", "javascriptreact"]
+  },
+  "template.templatesDirectory": "/Users/nick/.config/templates",
+  "tsserver.npm": "/Users/nick/.config/node/bin/npm",
+  "tsserver.tsdk": "/Users/nick/.config/yarn/global/node_modules/typescript/lib",
+  "tsserver.typingsCacheLocation": "/Users/nick/.config/nvim/tstypes",
+  "tsserver.watchOptions": {
+    "watchFile": "useFsEvents",
+    "fallbackPolling": "priorityPollingInterval"
+  },
+  "workspace.ignoredFiletypes": ["markdown", "log", "txt", "help"]
+}
