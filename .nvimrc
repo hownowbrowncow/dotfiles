@@ -11,19 +11,32 @@ Plug 'editorconfig/editorconfig-vim'
 
 " Utility
 Plug 'mileszs/ack.vim'
-Plug 'ap/vim-buftabline'
-Plug 'preservim/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'Yggdroot/LeaderF', { 'do': '.\install.sh' }
+"Plug 'ap/vim-buftabline'
+"Plug 'preservim/nerdtree'
+"Plug 'Xuyuanp/nerdtree-git-plugin'
+"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"Plug 'junegunn/fzf.vim'
+"Plug 'tpope/vim-fugitive'
+"Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'roxma/vim-tmux-clipboard'
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'romgrk/barbar.nvim'
 
 " js/ts
 Plug 'soywod/typescript.vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Current extensions
+" coc-tsserver
+" coc-html
+" coc-json
+" coc-css
+" coc-pairs
+" coc-eslint
 
 " Python
 Plug 'janko/vim-test'
@@ -43,13 +56,12 @@ if has('mouse')
 endif
 
 if filereadable(expand("~/.vimrc_background"))
-  set termguicolors
   let base16colorspace=256
   source ~/.vimrc_background
 endif
 
 if has('unix')
-  set shell=/opt/local/bin/bash
+  set shell=/bin/bash
 endif
 
 set nocompatible
@@ -69,6 +81,7 @@ set history=100
 " Theme config
 set background=dark
 set t_Co=256
+set termguicolors
 
 " Consistent timeout
 set timeoutlen=200
@@ -137,10 +150,13 @@ nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
 nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
 " LeaderF mappings
-noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
-noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
-noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
-noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+"noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+"noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+"noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 " Use <TAB> for selections ranges.
@@ -162,22 +178,26 @@ nmap <leader>N :set nonumber<CR>
 nmap <leader>p :set paste<CR>
 nmap <S-F> :set nopaste<CR>
 " Buffers
-nmap <S-C> :bdelete<CR>
-nmap <S-N> :bnext<CR>
-nmap <S-B> :bprevious<CR>
+nnoremap <silent>  <S-B> :BufferPrevious<CR>
+nnoremap <silent>  <S-N> :BufferNext<CR>
+nnoremap <silent>  <S-C> :BufferClose<CR>
 " NERDTree toggle
-nmap <C-f> :NERDTreeToggle<CR>
+" nmap <C-f> :NERDTreeToggle<CR>
+
+nnoremap <C-f> :NvimTreeToggle<CR>
+nnoremap <leader>r :NvimTreeRefresh<CR>
+nnoremap <leader>n :NvimTreeFindFile<CR>
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
 let g:coc_start_at_startup=1
 let g:coc_data_home='/Users/nick/.config/nvim/coc'
 
-let g:NERDTreeShowHidden=1
-let g:NERDTreeWinSize=40
-let g:NERDSpaceDelims=1
-let g:NERDDefaultAlign='left'
-let g:NERDTreeMinimalUI=1
+"let g:NERDTreeShowHidden=1
+"let g:NERDTreeWinSize=40
+"let g:NERDSpaceDelims=1
+"let g:NERDDefaultAlign='left'
+"let g:NERDTreeMinimalUI=1
 
 let g:Lf_WindowPosition = 'popup'
 let g:Lf_PreviewInPopup = 1
@@ -186,7 +206,7 @@ let g:Lf_UseCache = 0
 let g:Lf_UseVersionControlTool = 0
 let g:Lf_IgnoreCurrentBufferName = 1
 let g:Lf_DevIconsFont = "Hack Nerd Font Mono"
-let g:Lf_ShortcutF = "<leader>ff"
+"let g:Lf_ShortcutF = "<leader>ff"
 let g:Lf_StlColorScheme = 'base16-tomorrow-night'
 let g:Lf_PopupColorscheme = 'base16-tomorrow-night'
 
@@ -194,6 +214,10 @@ let g:templates_debug = 1
 let g:templates_no_autocmd = 1
 let g:templates_directory = ['/Users/nick/.config/templates']
 let g:templates_name_prefix = '.vim-template:'
+
+let g:nvim_tree_width = 40 "30 by default
+let g:nvim_tree_auto_close = 1
+let g:nvim_tree_git_hl = 1
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
@@ -267,6 +291,39 @@ function! CocLineStatus() abort
 
   return status
 endfunction
+
+let g:nvim_tree_show_icons = {
+    \ 'git': 1,
+    \ 'folders': 1,
+    \ 'files': 1,
+    \ }
+let g:nvim_tree_icons = {
+    \ 'default': '',
+    \ 'symlink': '',
+    \ 'git': {
+    \   'unstaged': "✗",
+    \   'staged': "✓",
+    \   'unmerged': "",
+    \   'renamed': "➜",
+    \   'untracked': "★",
+    \   'deleted': "",
+    \   'ignored': "◌"
+    \   },
+    \ 'folder': {
+    \   'default': "",
+    \   'open': "",
+    \   'empty': "",
+    \   'empty_open': "",
+    \   'symlink': "",
+    \   'symlink_open': "",
+    \   },
+    \   'lsp': {
+    \     'hint': "",
+    \     'info': "",
+    \     'warning': "",
+    \     'error': "",
+    \   }
+    \ }
 
 let g:lightline = {
   \ 'colorscheme': 'base16_tomorrow_night',
