@@ -1,4 +1,4 @@
-call plug#begin('~/.vim/plugged')
+call plug#begin('/Users/nick/.config/nvim/plugged')
 
 " Theme
 Plug 'itchyny/lightline.vim'
@@ -11,20 +11,34 @@ Plug 'editorconfig/editorconfig-vim'
 
 " Utility
 Plug 'mileszs/ack.vim'
-Plug 'ap/vim-buftabline'
-Plug 'preservim/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-fugitive'
-
+"Plug 'ap/vim-buftabline'
+"Plug 'preservim/nerdtree'
+"Plug 'Xuyuanp/nerdtree-git-plugin'
+"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"Plug 'junegunn/fzf.vim'
+"Plug 'tpope/vim-fugitive'
+"Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'roxma/vim-tmux-clipboard'
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'romgrk/barbar.nvim'
+Plug 'npxbr/glow.nvim', {'do': ':GlowInstall','branch':'main'}
 
 " js/ts
-Plug 'yuezk/vim-js'
-Plug 'leafgarland/typescript-vim'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/jsonc.vim'
+Plug 'soywod/typescript.vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Current extensions
+" coc-tsserver
+" coc-html
+" coc-json
+" coc-css
+" coc-pairs
+" coc-eslint
 
 " Python
 Plug 'janko/vim-test'
@@ -37,12 +51,6 @@ Plug 'othree/csscomplete.vim'
 
 call plug#end()
 
-filetype on
-filetype indent on
-
-syntax on
-syntax enable
-
 let mapleader=','
 
 if has('mouse')
@@ -50,11 +58,12 @@ if has('mouse')
 endif
 
 if filereadable(expand("~/.vimrc_background"))
-	set termguicolors
-	let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-	let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   let base16colorspace=256
   source ~/.vimrc_background
+endif
+
+if has('unix')
+  set shell=/bin/bash
 endif
 
 set nocompatible
@@ -74,6 +83,7 @@ set history=100
 " Theme config
 set background=dark
 set t_Co=256
+set termguicolors
 
 " Consistent timeout
 set timeoutlen=200
@@ -82,6 +92,7 @@ set timeoutlen=200
 set incsearch
 set ignorecase
 set smartcase
+set nohlsearch
 
 " Scrolling
 set scrolloff=10
@@ -114,6 +125,7 @@ set cmdheight=2
 set updatetime=300
 set shortmess+=c
 set signcolumn=yes
+set hidden
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -123,6 +135,9 @@ function! s:show_documentation()
   endif
 endfunction
 
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+nnoremap <esc> :noh<return><esc>
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 " Mappings using CoCList:
@@ -136,13 +151,20 @@ nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
 nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" LeaderF mappings
+"noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+"noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+"noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 " Use <TAB> for selections ranges.
 nmap <silent> <TAB> <Plug>(coc-range-select)
-nmap <silent> <S-P> <Plug>(coc-refactor)
 xmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <S-P> <Plug>(coc-refactor)
+nmap <silent> <S-P> <Plug>(coc-refactor)
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
@@ -158,28 +180,56 @@ nmap <leader>N :set nonumber<CR>
 nmap <leader>p :set paste<CR>
 nmap <S-F> :set nopaste<CR>
 " Buffers
-nmap <S-C> :bdelete<CR>
-nmap <S-N> :bnext<CR>
-nmap <S-B> :bprevious<CR>
+nnoremap <silent>  <S-B> :BufferPrevious<CR>
+nnoremap <silent>  <S-N> :BufferNext<CR>
+nnoremap <silent>  <S-C> :BufferClose<CR>
 " NERDTree toggle
-nmap <C-f> :NERDTreeToggle<CR>
+" nmap <C-f> :NERDTreeToggle<CR>
+nmap <leader>g :Glow<CR>
+
+nnoremap <C-f> :NvimTreeToggle<CR>
+nnoremap <leader>r :NvimTreeRefresh<CR>
+nnoremap <leader>n :NvimTreeFindFile<CR>
 
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
 let g:coc_start_at_startup=1
-let g:coc_node_path='/Users/nick/.config/node/n/versions/node/12.16.3/bin/node'
-let g:coc_data_home='/Users/nick/.config/coc'
+let g:coc_data_home='/Users/nick/.config/nvim/coc'
 
-let g:NERDTreeShowHidden=1
-let g:NERDTreeWinSize=40
-let g:NERDSpaceDelims=1
-let g:NERDDefaultAlign='left'
-let g:NERDTreeMinimalUI=1
+"let g:NERDTreeShowHidden=1
+"let g:NERDTreeWinSize=40
+"let g:NERDSpaceDelims=1
+"let g:NERDDefaultAlign='left'
+"let g:NERDTreeMinimalUI=1
+
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_PreviewInPopup = 1
+let g:Lf_HideHelp = 1
+let g:Lf_UseCache = 0
+let g:Lf_UseVersionControlTool = 0
+let g:Lf_IgnoreCurrentBufferName = 1
+let g:Lf_DevIconsFont = "Hack Nerd Font Mono"
+"let g:Lf_ShortcutF = "<leader>ff"
+let g:Lf_StlColorScheme = 'base16-tomorrow-night'
+let g:Lf_PopupColorscheme = 'base16-tomorrow-night'
+
+let g:templates_debug = 1
+let g:templates_no_autocmd = 1
+let g:templates_directory = ['/Users/nick/.config/templates']
+let g:templates_name_prefix = '.vim-template:'
+
+let g:nvim_tree_width = 40 "30 by default
+let g:nvim_tree_auto_close = 1
+let g:nvim_tree_git_hl = 1
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
 " map prettier to coc-format
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
+command! -nargs=0 Lint :CocCommand eslint.executeAutofix
+
+nnoremap <S-L> :Prettier<cr>
+
 command! -complete=dir FzfSrc
   \ call fzf#vim#files(getcwd().'/src', fzf#vim#with_preview({'dir': getcwd().'/src', 'options': ['--info=inline']}), <bang>0)
 command! -complete=dir FzfRoot
@@ -245,8 +295,41 @@ function! CocLineStatus() abort
   return status
 endfunction
 
+let g:nvim_tree_show_icons = {
+    \ 'git': 1,
+    \ 'folders': 1,
+    \ 'files': 1,
+    \ }
+let g:nvim_tree_icons = {
+    \ 'default': '',
+    \ 'symlink': '',
+    \ 'git': {
+    \   'unstaged': "✗",
+    \   'staged': "✓",
+    \   'unmerged': "",
+    \   'renamed': "➜",
+    \   'untracked': "★",
+    \   'deleted': "",
+    \   'ignored': "◌"
+    \   },
+    \ 'folder': {
+    \   'default': "",
+    \   'open': "",
+    \   'empty': "",
+    \   'empty_open': "",
+    \   'symlink': "",
+    \   'symlink_open': "",
+    \   },
+    \   'lsp': {
+    \     'hint': "",
+    \     'info': "",
+    \     'warning': "",
+    \     'error': "",
+    \   }
+    \ }
+
 let g:lightline = {
-  \ 'colorscheme': 'monokai',
+  \ 'colorscheme': 'base16_tomorrow_night',
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ], [ 'cocstatus', 'readonly', 'filename' ], [ 'cocerror', 'cocwarn', 'cocinfo' ] ],
   \   'right': [ [ 'fileformat', 'fileencoding', 'filetype' ], [ 'branch' ] ],
@@ -265,16 +348,6 @@ let g:lightline = {
   \   'branch': 'LightlineFugitive',
   \   },
   \ }
-
-let g:tmuxline_preset = {
-  \'a': '#S',
-  \'c': ['#(whoami)', '#(uptime | cut -d " " -f 1,2,3)'],
-  \'win': ['#I', '#W'],
-  \'cwin': ['#I', '#W', '#F'],
-  \'x': '#(date)',
-  \'y': ['%R', '%a', '%Y'],
-  \'z': '#H'
-  \}
 
 let g:NERDTreeIndicatorMapCustom = {
   \ "Modified": "~",
