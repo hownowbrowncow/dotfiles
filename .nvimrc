@@ -25,10 +25,12 @@ Plug 'roxma/vim-tmux-clipboard'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'romgrk/barbar.nvim'
+Plug 'npxbr/glow.nvim', {'do': ':GlowInstall','branch':'main'}
 
 " js/ts
 Plug 'soywod/typescript.vim'
 Plug 'peitalin/vim-jsx-typescript'
+Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Current extensions
 " coc-tsserver
@@ -183,6 +185,7 @@ nnoremap <silent>  <S-N> :BufferNext<CR>
 nnoremap <silent>  <S-C> :BufferClose<CR>
 " NERDTree toggle
 " nmap <C-f> :NERDTreeToggle<CR>
+nmap <leader>g :Glow<CR>
 
 nnoremap <C-f> :NvimTreeToggle<CR>
 nnoremap <leader>r :NvimTreeRefresh<CR>
