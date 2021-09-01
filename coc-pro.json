@@ -1,7 +1,4 @@
 {
-  "eslint.options": {
-    "configFile": "/Users/nick/src/web-pro/packages/pro2/package.json"
-  },
   "suggest.autoTrigger": "always",
   "suggest.maxCompleteItemCount": 20,
   "prettier.eslintIntegration": true,
