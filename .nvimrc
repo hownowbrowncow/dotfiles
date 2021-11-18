@@ -1,4 +1,4 @@
-call plug#begin('/Users/nick/.config/nvim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 " Theme
 Plug 'itchyny/lightline.vim'
@@ -25,12 +25,11 @@ Plug 'roxma/vim-tmux-clipboard'
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'romgrk/barbar.nvim'
-Plug 'npxbr/glow.nvim', {'do': ':GlowInstall','branch':'main'}
 
 " js/ts
-Plug 'soywod/typescript.vim'
+Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
-Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Current extensions
 " coc-tsserver
@@ -51,6 +50,7 @@ Plug 'othree/csscomplete.vim'
 
 call plug#end()
 
+
 let mapleader=','
 
 if has('mouse')
@@ -59,6 +59,7 @@ endif
 
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
+  set termguicolors
   source ~/.vimrc_background
 endif
 
@@ -82,8 +83,6 @@ set history=100
 
 " Theme config
 set background=dark
-set t_Co=256
-set termguicolors
 
 " Consistent timeout
 set timeoutlen=200
@@ -194,7 +193,7 @@ nnoremap <leader>n :NvimTreeFindFile<CR>
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
 let g:coc_start_at_startup=1
-let g:coc_data_home='/Users/nick/.config/nvim/coc'
+let g:coc_data_home='~/.config/nvim/coc'
 
 "let g:NERDTreeShowHidden=1
 "let g:NERDTreeWinSize=40
@@ -209,18 +208,13 @@ let g:Lf_UseCache = 0
 let g:Lf_UseVersionControlTool = 0
 let g:Lf_IgnoreCurrentBufferName = 1
 let g:Lf_DevIconsFont = "Hack Nerd Font Mono"
-"let g:Lf_ShortcutF = "<leader>ff"
 let g:Lf_StlColorScheme = 'base16-tomorrow-night'
 let g:Lf_PopupColorscheme = 'base16-tomorrow-night'
 
 let g:templates_debug = 1
 let g:templates_no_autocmd = 1
-let g:templates_directory = ['/Users/nick/.config/templates']
+let g:templates_directory = ['~/.config/templates']
 let g:templates_name_prefix = '.vim-template:'
-
-let g:nvim_tree_width = 40 "30 by default
-let g:nvim_tree_auto_close = 1
-let g:nvim_tree_git_hl = 1
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
@@ -230,22 +224,12 @@ command! -nargs=0 Lint :CocCommand eslint.executeAutofix
 
 nnoremap <S-L> :Prettier<cr>
 
-command! -complete=dir FzfSrc
-  \ call fzf#vim#files(getcwd().'/src', fzf#vim#with_preview({'dir': getcwd().'/src', 'options': ['--info=inline']}), <bang>0)
-command! -complete=dir FzfRoot
-  \ call fzf#vim#files(getcwd(), fzf#vim#with_preview({'dir': getcwd(), 'options': ['--info=inline']}), <bang>0)
-
-nnoremap <C-g> :FzfSrc<cr>
-nnoremap <C-a> :FzfRoot<cr>
-
-" Set filetypes for non-standard files
-autocmd BufNewFile,BufRead .eslintrc,.babelrc,.stylelintrc set filetype=json
-autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
-autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 " Better css autocomplete
 autocmd FileType json syntax match Comment +\/\/.\+$+
 autocmd FileType markdown let b:coc_pairs_disabled = ['`']
 autocmd User CocDiagnosticChange call lightline#update()
+" set filetypes as typescriptreact
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
 
 function! LightlineFugitive()
   if exists('*FugitiveHead')
@@ -361,21 +345,6 @@ let g:NERDTreeIndicatorMapCustom = {
   \ 'Ignored': "i",
   \ "Unknown": "?"
   \ }
-let g:fzf_colors = {
-  \ 'fg': ['fg', 'Normal'],
-  \ 'bg': ['bg', 'Normal'],
-  \ 'hl': ['fg', 'Comment'],
-  \ 'fg+': ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+': ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+': ['fg', 'Statement'],
-  \ 'info': ['fg', 'PreProc'],
-  \ 'border': ['bg', 'Repeat'],
-  \ 'prompt': ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker': ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header': ['bg', 'Comment']
-  \}
 
 hi clear Spellbad
 hi clear Error
@@ -384,3 +353,61 @@ hi clear Ignore
 hi Error term=underline cterm=underline ctermfg=1 gui=underline guifg=#EC5F67
 hi Ignore ctermfg=3 guifg=#FFCC00
 hi Spellbad ctermfg=4 guifg=#FFCC00
+
+lua << EOF
+-- following options are the default
+-- each of these are documented in `:help nvim-tree.OPTION_NAME`
+require'nvim-tree'.setup {
+  disable_netrw       = true,
+  hijack_netrw        = true,
+  open_on_setup       = false,
+  ignore_ft_on_setup  = {},
+  auto_close          = true,
+  open_on_tab         = false,
+  hijack_cursor       = false,
+  update_cwd          = false,
+  update_to_buf_dir   = {
+    enable = true,
+    auto_open = true,
+  },
+  diagnostics = {
+    enable = false,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    }
+  },
+  update_focused_file = {
+    enable      = false,
+    update_cwd  = false,
+    ignore_list = {}
+  },
+  system_open = {
+    cmd  = nil,
+    args = {}
+  },
+  filters = {
+    dotfiles = false,
+    custom = {}
+  },
+  view = {
+    width = 40,
+    height = 30,
+    hide_root_folder = false,
+    side = 'left',
+    auto_resize = true,
+    mappings = {
+      custom_only = false,
+      list = {}
+    }
+  }
+}
+
+require('telescope').setup {
+  defaults = { 
+    file_ignore_patterns = {"node_modules"} 
+  }
+}
+EOF
