@@ -1,0 +1,97 @@
+[alias]
+
+  # List commits in short form, with colors and branch/tag annotations. 
+  ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+
+  # Graph commits, abbreviated IDS, dates relative to now, with commit refernce, colors, author of commit
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  lc = log master..HEAD --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
+  # View the current working tree status using the short format
+  s = status -s
+
+  # Switch to a branch, creating it if necessary
+  go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+
+  # Amend the currently staged files to the latest commit
+  amend = commit --amend --reuse-message=HEAD
+
+  # Show verbose output about tags, branches or remotes
+  tags = tag -l
+  branches = branch -a
+  remotes = remote -v
+
+  # Remove branches that have already been merged with master
+  # a.k.a. ‘delete merged’
+  dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+  # Initialize a new repository
+  start = "!git init && git commit --allow-empty -m 'Initial commit'"
+
+  # Show diff between latest commit and current state
+  d = !"git diff-index --quiet HEAD -- || git --no-pager diff --patch-with-stat"
+
+  # Show only files with conflicts
+  conflict = diff --name-only --diff-filter=U
+
+  # show addition/deletion stats
+  stats = diff --shortstat
+
+  # creates local branch of PR/$1 from upstream|origin or $2
+  pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
+
+  # removes all PR branches
+  pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
+
+  # Delete local and remote branch
+  nuke = !sh -c 'git branch -D $1 && git push origin :$1' -
+
+[merge]
+  # Include summaries of merged commits in newly created merge commit messages
+  log = false
+  conflictstyle = zdiff3
+
+[rebase]
+  autostash = true
+  conflictstyle = zdiff3
+
+[pull]
+  rebase = true
+
+[push]
+  default = current
+
+[diff]
+  renames = copies
+  algorithm = histogram
+
+[color]
+  # Use colors in Git commands that are capable of colored output when
+  # outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
+  ui = auto
+
+[color "branch"]
+
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "status"]
+
+  added = yellow
+  changed = green
+  untracked = cyan
+
+[color "diff"]
+
+  meta = yellow bold
+  frag = magenta bold # line info
+  old = red # deletions
+  new = green # additions
+
+[includeIf "gitdir:/Users/ncoffey/dev/"]
+  path = .gitconfig-dev
+
+[core]
+
+  editor = vim
