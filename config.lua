@@ -20,10 +20,11 @@ lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 lvim.builtin.telescope.pickers.find_files.hidden = true
 lvim.builtin.treesitter.auto_install = true
+lvim.colorscheme = "kanagawa"
 
 lvim.plugins = {
-  { "ishan9299/nvim-solarized-lua" },
   { "gpanders/editorconfig.nvim" },
+  { "rebelot/kanagawa.nvim" },
 }
 
 local formatters = require "lvim.lsp.null-ls.formatters"
