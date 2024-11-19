@@ -8,6 +8,7 @@ lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
+lvim.builtin.nvimtree.setup.view.adaptive_size = true
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 lvim.builtin.telescope.pickers.find_files.hidden = true
 lvim.builtin.treesitter.auto_install = true
@@ -31,21 +32,6 @@ local prompts = {
   Wording = "Please improve the grammar and wording of the following text.",
   Concise = "Please rewrite the following text to make it more concise.",
 }
-
---- Get all the changes in the git repository
----@param staged? boolean
----@return string
-local function get_git_diff(staged)
-  local cmd = staged and "git diff --staged" or "git diff"
-  local handle = io.popen(cmd)
-  if not handle then
-    return ""
-  end
-
-  local result = handle:read("*a")
-  handle:close()
-  return result
-end
 
 lvim.plugins = {
   { "gpanders/editorconfig.nvim" },
@@ -100,21 +86,6 @@ lvim.plugins = {
     config = function()
       require("copilot_cmp").setup()
     end
-  },
-  {
-    "folke/which-key.nvim",
-    optional = true,
-    opts = {
-      spec = {
-        { "<leader>a", group = "ai" },
-        { "gm",        group = "+Copilot chat" },
-        { "gmh",       desc = "Show help" },
-        { "gmd",       desc = "Show diff" },
-        { "gmp",       desc = "Show system prompt" },
-        { "gms",       desc = "Show selection" },
-        { "gmy",       desc = "Yank diff" },
-      },
-    },
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
@@ -268,11 +239,31 @@ lvim.plugins = {
         desc = "CopilotChat - Prompt actions",
       },
       -- Code related commands
-      { "<leader>ae", "<cmd>CopilotChatExplain<cr>",       desc = "CopilotChat - Explain code" },
-      { "<leader>at", "<cmd>CopilotChatTests<cr>",         desc = "CopilotChat - Generate tests" },
-      { "<leader>ar", "<cmd>CopilotChatReview<cr>",        desc = "CopilotChat - Review code" },
-      { "<leader>aR", "<cmd>CopilotChatRefactor<cr>",      desc = "CopilotChat - Refactor code" },
-      { "<leader>an", "<cmd>CopilotChatBetterNamings<cr>", desc = "CopilotChat - Better Naming" },
+      {
+        "<leader>ae",
+        "<cmd>CopilotChatExplain<cr>",
+        desc = "CopilotChat - Explain code"
+      },
+      {
+        "<leader>at",
+        "<cmd>CopilotChatTests<cr>",
+        desc = "CopilotChat - Generate tests"
+      },
+      {
+        "<leader>ar",
+        "<cmd>CopilotChatReview<cr>",
+        desc = "CopilotChat - Review code"
+      },
+      {
+        "<leader>aR",
+        "<cmd>CopilotChatRefactor<cr>",
+        desc = "CopilotChat - Refactor code"
+      },
+      {
+        "<leader>an",
+        "<cmd>CopilotChatBetterNamings<cr>",
+        desc = "CopilotChat - Better Naming"
+      },
       -- Chat with Copilot in visual mode
       {
         "<leader>av",
@@ -319,16 +310,31 @@ lvim.plugins = {
         end,
         desc = "CopilotChat - Quick chat",
       },
-      -- Debug
-      { "<leader>ad", "<cmd>CopilotChatDebugInfo<cr>",     desc = "CopilotChat - Debug Info" },
-      -- Fix the issue with diagnostic
-      { "<leader>af", "<cmd>CopilotChatFixDiagnostic<cr>", desc = "CopilotChat - Fix Diagnostic" },
-      -- Clear buffer and chat history
-      { "<leader>al", "<cmd>CopilotChatReset<cr>",         desc = "CopilotChat - Clear buffer and chat history" },
-      -- Toggle Copilot Chat Vsplit
-      { "<leader>av", "<cmd>CopilotChatToggle<cr>",        desc = "CopilotChat - Toggle" },
-      -- Copilot Chat Models
-      { "<leader>a?", "<cmd>CopilotChatModels<cr>",        desc = "CopilotChat - Select Models" },
+      {
+        "<leader>ad",
+        "<cmd>CopilotChatDebugInfo<cr>",
+        desc = "CopilotChat - Debug Info"
+      },
+      {
+        "<leader>af",
+        "<cmd>CopilotChatFixDiagnostic<cr>",
+        desc = "CopilotChat - Fix Diagnostic"
+      },
+      {
+        "<leader>al",
+        "<cmd>CopilotChatReset<cr>",
+        desc = "CopilotChat - Clear buffer and chat history"
+      },
+      {
+        "<leader>av",
+        "<cmd>CopilotChatToggle<cr>",
+        desc = "CopilotChat - Toggle"
+      },
+      {
+        "<leader>a?",
+        "<cmd>CopilotChatModels<cr>",
+        desc = "CopilotChat - Select Models"
+      },
     },
   },
   {
