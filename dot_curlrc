@@ -1,0 +1,14 @@
+# When following a redirect, automatically set the previous URL as referer
+referer = ";auto"
+
+# Wait 60 seconds before timing out
+connect-timeout = 60
+
+# Follow redirects
+location
+
+# Use compression
+compressed
+
+# Create intermediate directories as needed
+create-dirs

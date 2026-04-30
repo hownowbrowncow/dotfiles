@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Editor swap files
+*.swp
+*.swo
+*~
+
+# chezmoi state (managed by chezmoi, not the repo)
+# Users run `chezmoi init` which creates ~/.local/share/chezmoi pointing here

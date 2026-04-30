@@ -1,0 +1,23 @@
+# lazygit configuration
+gui:
+  showIcons: true
+  nerdFontsVersion: "3"
+  theme:
+    lightTheme: false
+  showBottomLine: false
+  showCommandLog: false
+
+git:
+  paging:
+    useConfig: true
+  autoFetch: true
+  autoRefresh: true
+  branchLogCmd: "git log --graph --oneline --decorate {{branchName}}"
+  overrideGpg: false
+
+os:
+  editPreset: "nvim"
+
+keybinding:
+  universal:
+    quit: "q"

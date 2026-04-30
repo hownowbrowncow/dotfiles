@@ -1,0 +1,139 @@
+#!/bin/bash
+# chezmoi run_once_before script — runs on first `chezmoi apply`
+# Installs Homebrew (macOS) and prompts for tool categories to install.
+
+set -euo pipefail
+
+BOLD='\033[1m'
+DIM='\033[2m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+CYAN='\033[0;36m'
+RED='\033[0;31m'
+RESET='\033[0m'
+
+header() {
+  echo ""
+  echo -e "${BOLD}${CYAN}  ╔══════════════════════════════════════╗${RESET}"
+  echo -e "${BOLD}${CYAN}  ║       Dotfiles Bootstrap             ║${RESET}"
+  echo -e "${BOLD}${CYAN}  ╚══════════════════════════════════════╝${RESET}"
+  echo ""
+}
+
+info()    { echo -e "  ${GREEN}▸${RESET} $1"; }
+warn()    { echo -e "  ${YELLOW}▸${RESET} $1"; }
+error()   { echo -e "  ${RED}▸${RESET} $1"; }
+prompt()  { echo -ne "  ${CYAN}?${RESET} $1 ${DIM}[y/N]${RESET} "; }
+
+ask() {
+  prompt "$1"
+  read -r answer
+  [[ "$answer" =~ ^[Yy]$ ]]
+}
+
+# ── Detect Platform ───────────────────────────────────────────────────────────
+{{ if eq .chezmoi.os "darwin" -}}
+OS="macOS"
+ARCH="{{ .chezmoi.arch }}"
+info "Detected: ${BOLD}${OS}${RESET} (${ARCH})"
+
+# ── Install Homebrew ──────────────────────────────────────────────────────────
+if ! command -v brew &>/dev/null; then
+  if ask "Homebrew not found. Install it?"; then
+    info "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
+  else
+    warn "Skipping Homebrew — some tools won't be available"
+  fi
+fi
+
+if command -v brew &>/dev/null; then
+  BREWFILE="{{ .chezmoi.sourceDir }}/Brewfile"
+
+  if [ -f "$BREWFILE" ]; then
+    echo ""
+    echo -e "  ${BOLD}What would you like to install?${RESET}"
+    echo ""
+
+    TAGS=""
+
+    if ask "Core CLI tools (bash, git, tmux, ripgrep, fd, bat, eza, fzf, jq)"; then
+      TAGS="${TAGS}core,"
+    fi
+
+    if ask "Development tools (gh, lazygit, neovim, chezmoi, direnv, shellcheck)"; then
+      TAGS="${TAGS}dev,"
+    fi
+
+    if ask "Languages & runtimes (node, python, go, rust)"; then
+      TAGS="${TAGS}languages,"
+    fi
+
+    if ask "Nerd Fonts (Hack, JetBrains Mono, Fira Code)"; then
+      TAGS="${TAGS}fonts,"
+    fi
+
+    if ask "macOS apps (iTerm2, Docker, Rectangle, Raycast)"; then
+      TAGS="${TAGS}apps,"
+    fi
+
+    if ask "Fun/niche tools (fastfetch, btop, lolcat, cmatrix, pipes)"; then
+      TAGS="${TAGS}fun,"
+    fi
+
+    if [ -n "$TAGS" ]; then
+      echo ""
+      info "Installing selected packages..."
+
+      # Extract lines matching selected tags from Brewfile
+      TMPFILE=$(mktemp)
+      IFS=',' read -ra TAG_ARRAY <<< "$TAGS"
+      for tag in "${TAG_ARRAY[@]}"; do
+        [ -z "$tag" ] && continue
+        # Get the block between tag:$tag and the next tag: or EOF
+        awk "/^# tag:${tag}$/,/^# tag:/{print}" "$BREWFILE" | grep -E '^(brew|cask) ' >> "$TMPFILE" || true
+      done
+
+      if [ -s "$TMPFILE" ]; then
+        brew bundle --file="$TMPFILE" --no-lock 2>&1 | while read -r line; do
+          info "$line"
+        done
+      fi
+      rm -f "$TMPFILE"
+    else
+      warn "No categories selected — skipping package installation"
+    fi
+  fi
+fi
+
+{{ else -}}
+OS="Linux"
+info "Detected: ${BOLD}${OS}${RESET}"
+warn "Automated package installation is configured for macOS (Homebrew)."
+warn "On Linux, install packages manually or adapt the Brewfile for your package manager."
+{{ end -}}
+
+# ── SSH Control Directory ─────────────────────────────────────────────────────
+if [ ! -d "$HOME/.ssh/control" ]; then
+  info "Creating ~/.ssh/control for SSH multiplexing..."
+  mkdir -p "$HOME/.ssh/control"
+  chmod 700 "$HOME/.ssh"
+  chmod 700 "$HOME/.ssh/control"
+fi
+
+# ── TPM (Tmux Plugin Manager) ────────────────────────────────────────────────
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+  if ask "Install TPM (Tmux Plugin Manager)?"; then
+    info "Cloning TPM..."
+    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+    info "TPM installed. Run ${BOLD}prefix + I${RESET} inside tmux to install plugins."
+  fi
+fi
+
+# ── Vim Undo Directory ───────────────────────────────────────────────────────
+mkdir -p "$HOME/.vim/undodir"
+
+echo ""
+info "${GREEN}Bootstrap complete!${RESET}"
+echo ""

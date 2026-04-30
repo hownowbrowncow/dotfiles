@@ -1,0 +1,106 @@
+" ── Basic Vim Configuration ────────────────────────────────────────────────────
+" A minimal, sensible vimrc for when Neovim isn't available.
+" No plugins, no package managers -- just sane defaults.
+
+" ── General ───────────────────────────────────────────────────────────────────
+set nocompatible              " Use Vim defaults (not Vi)
+filetype plugin indent on     " Enable filetype detection, plugins, indent
+syntax on                     " Syntax highlighting
+
+" ── Display ───────────────────────────────────────────────────────────────────
+set number                    " Line numbers
+set relativenumber            " Relative line numbers
+set cursorline                " Highlight current line
+set showmatch                 " Highlight matching brackets
+set showcmd                   " Show partial command in status line
+set laststatus=2              " Always show status line
+set wildmenu                  " Enhanced command-line completion
+set wildmode=longest:full,full
+set scrolloff=8               " Keep 8 lines visible above/below cursor
+set sidescrolloff=8           " Keep 8 columns visible left/right
+set signcolumn=yes            " Always show sign column
+set nowrap                    " Don't wrap lines
+
+" ── Search ────────────────────────────────────────────────────────────────────
+set incsearch                 " Incremental search
+set hlsearch                  " Highlight search results
+set ignorecase                " Case-insensitive search...
+set smartcase                 " ...unless uppercase is used
+
+" ── Indentation ───────────────────────────────────────────────────────────────
+set autoindent                " Copy indent from current line
+set smartindent               " Smart autoindenting for C-like languages
+set expandtab                 " Use spaces instead of tabs
+set tabstop=2                 " Tab width
+set shiftwidth=2              " Indent width
+set softtabstop=2             " Soft tab width
+
+" ── Behavior ──────────────────────────────────────────────────────────────────
+set backspace=indent,eol,start  " Backspace works as expected
+set hidden                    " Allow switching buffers without saving
+set mouse=a                   " Enable mouse support
+set clipboard=unnamed         " Use system clipboard
+set autoread                  " Auto-reload files changed outside Vim
+set encoding=utf-8            " UTF-8 encoding
+set ttimeoutlen=50            " Faster mode switching
+set updatetime=250            " Faster CursorHold events
+set noswapfile                " Disable swap files
+
+" ── Persistent Undo ───────────────────────────────────────────────────────────
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.vim/undodir
+  if !isdirectory(&undodir)
+    call mkdir(&undodir, 'p')
+  endif
+endif
+
+" ── Key Mappings ──────────────────────────────────────────────────────────────
+let mapleader = ","
+
+" Clear search highlight
+nnoremap <Leader><space> :nohlsearch<CR>
+
+" Quick save
+nnoremap <Leader>w :w<CR>
+
+" Quick quit
+nnoremap <Leader>q :q<CR>
+
+" Buffer navigation
+nnoremap ]b :bnext<CR>
+nnoremap [b :bprev<CR>
+nnoremap <Leader>bd :bdelete<CR>
+
+" Move lines up/down in visual mode
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" Keep cursor centered when scrolling
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+
+" Better window navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" ── Netrw (built-in file explorer) ────────────────────────────────────────────
+let g:netrw_banner = 0        " No banner
+let g:netrw_liststyle = 3     " Tree view
+let g:netrw_browse_split = 4  " Open in previous window
+let g:netrw_winsize = 25      " 25% width
+
+" Toggle Netrw with Leader+e
+nnoremap <Leader>e :Lexplore<CR>
+
+" ── Status Line ───────────────────────────────────────────────────────────────
+set statusline=
+set statusline+=\ %f          " File path
+set statusline+=\ %m          " Modified flag
+set statusline+=\ %r          " Read-only flag
+set statusline+=%=            " Right align
+set statusline+=\ %y          " File type
+set statusline+=\ %l:%c       " Line:Column
+set statusline+=\ %p%%        " Percentage through file

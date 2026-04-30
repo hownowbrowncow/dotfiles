@@ -1,0 +1,21 @@
+# README and repo-only files
+README.md
+LICENSE
+Brewfile
+macos_defaults.sh
+
+# Platform-specific ignores
+{{ if ne .chezmoi.os "linux" }}
+# Linux-only configs (skip on macOS)
+.bashrc
+.config/i3
+.config/i3/**
+.config/i3status
+.config/i3status/**
+.gdbinit
+{{ end }}
+
+{{ if ne .chezmoi.os "darwin" }}
+# macOS-only configs (skip on Linux)
+.hushlogin
+{{ end }}

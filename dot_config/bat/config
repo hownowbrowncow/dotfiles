@@ -1,0 +1,10 @@
+# bat configuration -- https://github.com/sharkdp/bat
+
+# Theme
+--theme="TwoDark"
+
+# Show line numbers, git changes, header
+--style="numbers,changes,header"
+
+# Use less as pager with options
+--pager="less -FR"

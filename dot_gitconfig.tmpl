@@ -1,0 +1,127 @@
+[user]
+  name = {{ .name }}
+  email = {{ .email }}
+
+[alias]
+
+  # List commits in short form, with colors and branch/tag annotations
+  ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+
+  # Graph commits with relative dates and author
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
+  # Log commits since diverging from main/default branch
+  lc = "!git log $(git rev-parse --abbrev-ref origin/HEAD 2>/dev/null || echo main)..HEAD --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+
+  # Short status
+  s = status -s
+
+  # Switch to a branch, creating it if necessary
+  go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+
+  # Amend staged files to the latest commit
+  amend = commit --amend --reuse-message=HEAD
+
+  # Show verbose output about tags, branches, or remotes
+  tags = tag -l
+  branches = branch -a
+  remotes = remote -v
+
+  # Delete branches merged into main (a.k.a. 'delete merged')
+  dm = "!git branch --merged $(git rev-parse --abbrev-ref origin/HEAD 2>/dev/null || echo main) | grep -v '\\*' | xargs -n 1 git branch -d"
+
+  # Initialize a new repository with an empty commit
+  start = "!git init && git commit --allow-empty -m 'Initial commit'"
+
+  # Diff between latest commit and current state
+  d = !"git diff-index --quiet HEAD -- || git --no-pager diff --patch-with-stat"
+
+  # Show only files with merge conflicts
+  conflict = diff --name-only --diff-filter=U
+
+  # Addition/deletion stats
+  stats = diff --shortstat
+
+  # Checkout a GitHub PR locally
+  pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
+
+  # Remove all local PR branches
+  pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
+
+  # Delete local and remote branch
+  nuke = !sh -c 'git branch -D $1 && git push origin :$1' -
+
+  # Quick fixup commit (usage: git fixup <commit-hash>)
+  fixup = "!f() { git commit --fixup=$1 && GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash $1~1; }; f"
+
+  # Show what I did today
+  today = log --since=midnight --author='{{ .name }}' --oneline
+
+  # Undo last commit but keep changes staged
+  undo = reset --soft HEAD~1
+
+[merge]
+  log = 20
+  conflictstyle = zdiff3
+
+[rebase]
+  autostash = true
+  autosquash = true
+
+[pull]
+  rebase = true
+
+[push]
+  default = current
+  autoSetupRemote = true
+
+[diff]
+  renames = copies
+  algorithm = histogram
+  colorMoved = default
+
+[color]
+  ui = auto
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red
+  new = green
+  oldMoved = red italic
+  newMoved = green italic
+
+[init]
+  defaultBranch = main
+
+[fetch]
+  prune = true
+
+[transfer]
+  fsckobjects = true
+
+[core]
+  fsmonitor = true
+  editor = nvim
+
+[rerere]
+  enabled = true
+
+[branch]
+  sort = -committerdate
+
+[column]
+  ui = auto
+
+[url "git@github.com:"]
+  insteadOf = gh:

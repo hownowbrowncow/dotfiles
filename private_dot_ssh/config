@@ -1,0 +1,16 @@
+Host *
+  # Connection keep-alive
+  ServerAliveInterval 30
+  ServerAliveCountMax 6
+
+  # Connection multiplexing - reuse SSH connections for speed
+  ControlMaster auto
+  ControlPath ~/.ssh/control/%r@%h:%p
+  ControlPersist 600
+
+  # Compression for slow connections
+  Compression yes
+
+  # macOS Keychain integration
+  AddKeysToAgent yes
+  IdentitiesOnly yes

@@ -1,0 +1,205 @@
+# ── History ────────────────────────────────────────────────────────────────────
+HISTCONTROL=ignoreboth          # No duplicates or space-prefixed commands
+shopt -s histappend             # Append to history, don't overwrite
+HISTSIZE=10000
+HISTFILESIZE=20000
+
+# ── Shell Options ─────────────────────────────────────────────────────────────
+shopt -s checkwinsize           # Update LINES/COLUMNS after each command
+shopt -s cdspell                # Autocorrect minor cd typos
+shopt -s dirspell               # Autocorrect directory name typos during completion
+shopt -s globstar 2>/dev/null   # Allow ** recursive glob (bash 4+)
+
+# ── Colors ────────────────────────────────────────────────────────────────────
+force_color_prompt=yes
+export CLICOLOR=1               # macOS ls colors
+
+# ── Environment ───────────────────────────────────────────────────────────────
+export EDITOR=nvim
+export VISUAL=nvim
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+{{ if eq .chezmoi.os "darwin" -}}
+export BASH_SILENCE_DEPRECATION_WARNING=1
+export HOMEBREW_NO_ENV_HINTS=1
+{{- end }}
+
+# ── PATH Helpers ──────────────────────────────────────────────────────────────
+pathAddBefore() {
+  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+    PATH="$1${PATH:+:${PATH}}"
+  fi
+}
+
+pathAddAfter() {
+  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+    PATH="${PATH:+"$PATH:"}$1"
+  fi
+}
+
+# ── PATH Setup ────────────────────────────────────────────────────────────────
+export N_PREFIX="$HOME/n"
+export PNPM_HOME="$HOME/Library/pnpm"
+
+{{ if eq .chezmoi.os "darwin" -}}
+pathAddAfter "/opt/homebrew/bin"
+pathAddAfter "/opt/homebrew/sbin"
+{{- end }}
+pathAddBefore "$N_PREFIX/bin"
+pathAddAfter "$PNPM_HOME"
+pathAddAfter "$HOME/.cargo/bin"
+pathAddAfter "$HOME/.local/bin"
+pathAddAfter "$HOME/.local/share/bob/nvim-bin"
+
+# ── Aliases ───────────────────────────────────────────────────────────────────
+alias vim='nvim'
+alias vi='nvim'
+
+# Modern tool replacements (use if installed)
+command -v eza  &>/dev/null && alias ls='eza --icons --group-directories-first'
+command -v eza  &>/dev/null && alias ll='eza -la --icons --group-directories-first'
+command -v eza  &>/dev/null && alias lt='eza --tree --level=2 --icons'
+command -v bat  &>/dev/null && alias cat='bat --style=plain --paging=never'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias grep='grep --color=auto'
+
+# Git shortcuts
+alias gs='git status -s'
+alias gl='git lg'
+alias gd='git diff'
+alias gp='git pull'
+alias gc='git commit'
+
+# ── Functions ─────────────────────────────────────────────────────────────────
+function cd() {
+  if [ $# = 0 ]; then
+    builtin cd "$HOME"
+  else
+    builtin cd "$@"
+  fi
+}
+
+# Go back N directories
+b() {
+  local str=""
+  local count=0
+  while [ "$count" -lt "${1:-1}" ]; do
+    str="${str}../"
+    count=$((count + 1))
+  done
+  cd "$str"
+}
+
+# Colored man pages
+man() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+    man "$@"
+}
+
+# Extract any archive
+extract() {
+  if [ -f "$1" ]; then
+    case "$1" in
+      *.tar.bz2) tar xjf "$1"    ;;
+      *.tar.gz)  tar xzf "$1"    ;;
+      *.tar.xz)  tar xJf "$1"    ;;
+      *.tar.zst) tar --zstd -xf "$1" ;;
+      *.bz2)     bunzip2 "$1"    ;;
+      *.rar)     unrar e "$1"    ;;
+      *.gz)      gunzip "$1"     ;;
+      *.tar)     tar xf "$1"     ;;
+      *.tbz2)    tar xjf "$1"    ;;
+      *.tgz)     tar xzf "$1"    ;;
+      *.zip)     unzip "$1"      ;;
+      *.Z)       uncompress "$1" ;;
+      *.7z)      7z x "$1"       ;;
+      *)         echo "'$1' cannot be extracted via extract()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+# Copy with progress
+cp_p() {
+  rsync -WavP --human-readable --progress "$1" "$2"
+}
+
+# Create directory and cd into it
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+# ── Git Prompt ────────────────────────────────────────────────────────────────
+parse_git_branch() {
+  local BRANCH
+  BRANCH=$(git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+  if [ -n "$BRANCH" ]; then
+    local STAT
+    STAT=$(parse_git_dirty)
+    echo "[${BRANCH}${STAT}]"
+  fi
+}
+
+parse_git_dirty() {
+  local status bits=""
+  status=$(git status 2>&1)
+  echo -n "${status}" | grep "renamed:"              &>/dev/null && bits=">${bits}"
+  echo -n "${status}" | grep "Your branch is ahead"  &>/dev/null && bits="*${bits}"
+  echo -n "${status}" | grep "new file:"             &>/dev/null && bits="+${bits}"
+  echo -n "${status}" | grep "Untracked files"       &>/dev/null && bits="?${bits}"
+  echo -n "${status}" | grep "deleted:"              &>/dev/null && bits="x${bits}"
+  echo -n "${status}" | grep "modified:"             &>/dev/null && bits="!${bits}"
+  [ -n "${bits}" ] && echo " ${bits}"
+}
+
+export PS1="\[\e[31m\]┌─╼\[\e[m\] [\h] [\w] \$(parse_git_branch)\n\[\e[31m\]└────╼\[\e[m\] "
+
+# ── Completions ───────────────────────────────────────────────────────────────
+{{ if eq .chezmoi.os "darwin" -}}
+# Homebrew completions (must come after PATH setup)
+if type brew &>/dev/null; then
+  HOMEBREW_PREFIX="$(brew --prefix)"
+  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  else
+    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
+      [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+    done
+  fi
+fi
+
+# Tool-specific completions
+command -v aws       &>/dev/null && complete -C "$(which aws_completer)" aws
+command -v terraform &>/dev/null && complete -C "$(which terraform)" terraform
+{{- end }}
+
+# ── fzf Integration ──────────────────────────────────────────────────────────
+if command -v fzf &>/dev/null; then
+  eval "$(fzf --bash 2>/dev/null)" || true
+  export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --info=inline'
+  # Use fd if available (respects .gitignore)
+  command -v fd &>/dev/null && export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+  command -v fd &>/dev/null && export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  command -v fd &>/dev/null && export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+fi
+
+# ── Tool Setup ────────────────────────────────────────────────────────────────
+# ripgrep config
+export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+
+# bob-nvim
+[ -f "$HOME/.local/share/bob/env/env.sh" ] && source "$HOME/.local/share/bob/env/env.sh"
+
+# Cargo/Rust
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"

@@ -1,8 +1,0 @@
-{
-  "suggest.autoTrigger": "always",
-  "suggest.maxCompleteItemCount": 20,
-  "prettier.eslintIntegration": true,
-  "prettier.stylelintIntegration": true,
-  "tsserver.log": "normal",
-  "tsserver.ignoreLocalTsserver": true
-}

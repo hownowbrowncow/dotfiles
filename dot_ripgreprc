@@ -1,0 +1,25 @@
+# Smart case: case-insensitive unless pattern has uppercase
+--smart-case
+
+# Follow symlinks
+--follow
+
+# Add line numbers
+--line-number
+
+# Sort by file path
+--sort=path
+
+# Custom type definitions
+--type-add=web:*.{html,css,scss,js,jsx,ts,tsx,json,yaml,yml}
+--type-add=config:*.{toml,yaml,yml,json,ini,conf,cfg}
+--type-add=doc:*.{md,txt,rst,adoc}
+
+# Ignore directories
+--glob=!.git/
+--glob=!node_modules/
+--glob=!__pycache__/
+--glob=!.venv/
+--glob=!target/
+--glob=!dist/
+--glob=!build/
