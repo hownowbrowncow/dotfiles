@@ -6,9 +6,9 @@ HISTFILESIZE=20000
 
 # ── Shell Options ─────────────────────────────────────────────────────────────
 shopt -s checkwinsize           # Update LINES/COLUMNS after each command
-shopt -s cdspell                # Autocorrect minor cd typos
-shopt -s dirspell               # Autocorrect directory name typos during completion
-shopt -s globstar 2>/dev/null   # Allow ** recursive glob (bash 4+)
+shopt -s cdspell                 # Autocorrect minor cd typos
+shopt -s dirspell  2>/dev/null   # Autocorrect directory name typos (bash 4+)
+shopt -s globstar  2>/dev/null   # Allow ** recursive glob (bash 4+)
 
 # ── Colors ────────────────────────────────────────────────────────────────────
 force_color_prompt=yes
@@ -42,8 +42,8 @@ export N_PREFIX="$HOME/n"
 export PNPM_HOME="$HOME/Library/pnpm"
 
 {{ if eq .chezmoi.os "darwin" -}}
-pathAddAfter "/opt/homebrew/bin"
-pathAddAfter "/opt/homebrew/sbin"
+pathAddBefore "/opt/homebrew/bin"
+pathAddBefore "/opt/homebrew/sbin"
 {{- end }}
 pathAddBefore "$N_PREFIX/bin"
 pathAddAfter "$PNPM_HOME"
