@@ -72,6 +72,13 @@ return {
         ["<Leader>uS"] = { function() require("snacks").toggle.scroll():toggle() end, desc = "Toggle smooth scroll" },
         ["<Leader>ud"] = { function() require("snacks").toggle.dim():toggle() end, desc = "Toggle dim mode" },
         ["<Leader>uw"] = { function() require("snacks").toggle.words():toggle() end, desc = "Toggle word references" },
+
+        -- Snacks scratch buffers
+        ["<Leader>."] = { function() require("snacks").scratch() end, desc = "Toggle scratch buffer" },
+        ["<Leader>f."] = { function() require("snacks").scratch.select() end, desc = "Select scratch buffer" },
+
+        -- Snacks LSP-aware file rename
+        ["<Leader>cR"] = { function() require("snacks").rename.rename_file() end, desc = "Rename file (LSP)" },
       },
     },
   },
