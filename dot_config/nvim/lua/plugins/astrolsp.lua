@@ -18,9 +18,9 @@ return {
       format_on_save = {
         enabled = true, -- format on save globally
       },
-      -- Disable LSP-based formatting for servers where we use prettierd instead.
-      -- This avoids a conflict between vtsls/eslint and prettierd both trying to format.
-      disabled = { "vtsls" },
+      -- Disable LSP-based formatting for servers where we use prettier instead.
+      -- jsonls expands short arrays to multi-line; prettier handles JSON formatting correctly.
+      disabled = { "vtsls", "jsonls" },
       timeout_ms = 2000,
     },
     -- Enable servers already installed outside of Mason
