@@ -1,14 +1,22 @@
 # ── History ────────────────────────────────────────────────────────────────────
 HISTCONTROL=ignoreboth          # No duplicates or space-prefixed commands
 shopt -s histappend             # Append to history, don't overwrite
-HISTSIZE=10000
-HISTFILESIZE=20000
+shopt -s cmdhist                # Save multi-line commands as one entry
+HISTSIZE=50000
+HISTFILESIZE=100000
+HISTTIMEFORMAT='%F %T  '       # Timestamp each history entry
+PROMPT_COMMAND="history -a${PROMPT_COMMAND:+; $PROMPT_COMMAND}" # Flush history after every command
 
 # ── Shell Options ─────────────────────────────────────────────────────────────
 shopt -s checkwinsize           # Update LINES/COLUMNS after each command
-shopt -s cdspell                 # Autocorrect minor cd typos
-shopt -s dirspell  2>/dev/null   # Autocorrect directory name typos (bash 4+)
-shopt -s globstar  2>/dev/null   # Allow ** recursive glob (bash 4+)
+shopt -s cdspell                # Autocorrect minor cd typos
+shopt -s dirspell  2>/dev/null  # Autocorrect directory name typos (bash 4+)
+shopt -s globstar  2>/dev/null  # Allow ** recursive glob (bash 4+)
+shopt -s autocd    2>/dev/null  # cd by typing directory name (bash 4+)
+shopt -s nocaseglob             # Case-insensitive globbing
+shopt -s extglob                # Extended globs: !(pat), @(a|b), +(pat)
+shopt -s no_empty_cmd_completion # Don't tab-complete on empty line
+shopt -s cdable_vars            # cd into variable values (e.g., cd dev)
 
 # ── Colors ────────────────────────────────────────────────────────────────────
 force_color_prompt=yes
@@ -19,6 +27,22 @@ export EDITOR=nvim
 export VISUAL=nvim
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+
+# XDG Base Directories
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+# cd into ~/dev projects by name from anywhere (e.g., cd myproject)
+export CDPATH=".:$HOME:$HOME/dev"
+
+# Less: case-insensitive search, colors, quit-if-one-screen, long prompt, mouse
+export LESS='-iRFXMQ --mouse'
+
+# Use bat as man pager for syntax-highlighted man pages
+command -v bat &>/dev/null && export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
 {{ if eq .chezmoi.os "darwin" -}}
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export HOMEBREW_NO_ENV_HINTS=1
@@ -71,6 +95,11 @@ command -v eza  &>/dev/null && alias ll='eza -la --icons --group-directories-fir
 command -v eza  &>/dev/null && alias lt='eza --tree --level=2 --icons'
 command -v bat  &>/dev/null && alias cat='bat --style=plain --paging=never'
 
+# Safety: confirm before overwrite/delete
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -i'
+
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -101,19 +130,6 @@ b() {
     count=$((count + 1))
   done
   cd "$str"
-}
-
-# Colored man pages
-man() {
-  env \
-    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-    LESS_TERMCAP_md=$(printf "\e[1;31m") \
-    LESS_TERMCAP_me=$(printf "\e[0m") \
-    LESS_TERMCAP_se=$(printf "\e[0m") \
-    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-    LESS_TERMCAP_ue=$(printf "\e[0m") \
-    LESS_TERMCAP_us=$(printf "\e[1;32m") \
-    man "$@"
 }
 
 # Extract any archive
@@ -148,6 +164,47 @@ cp_p() {
 # Create directory and cd into it
 mkcd() {
   mkdir -p "$1" && cd "$1"
+}
+
+# Quick scratch notes (~/.notes)
+note() {
+  local file="$HOME/.notes"
+  if [ $# -eq 0 ]; then
+    cat "$file" 2>/dev/null
+  else
+    printf '%s  %s\n' "$(date '+%Y-%m-%d %H:%M')" "$*" >> "$file"
+  fi
+}
+
+# ── FZF Functions ─────────────────────────────────────────────────────────────
+# These require fzf + fd to be installed
+
+# Fuzzy cd: pick a directory interactively
+fcd() {
+  local dir
+  dir=$(fd --type d --hidden --follow --exclude .git 2>/dev/null | fzf --preview 'eza --tree --level=1 --icons {} 2>/dev/null || ls {}' +m) &&
+  cd "$dir"
+}
+
+# Fuzzy history: search and re-run a command
+fh() {
+  local cmd
+  cmd=$(history | sed 's/^ *[0-9]* *[0-9-]* [0-9:]* *//' | sort -u | fzf --tac --no-sort) &&
+  eval "$cmd"
+}
+
+# Fuzzy kill: pick a process to kill
+fkill() {
+  local pid
+  pid=$(ps -ef | sed 1d | fzf -m --header='Select process(es) to kill' | awk '{print $2}')
+  [ -n "$pid" ] && echo "$pid" | xargs kill -"${1:-9}"
+}
+
+# Fuzzy git checkout: pick a branch
+gco() {
+  local branch
+  branch=$(git branch --all --sort=-committerdate | grep -v HEAD | sed 's/^[ *]*//' | sed 's|^remotes/origin/||' | sort -u | fzf --preview 'git log --oneline -10 {}') &&
+  git checkout "$branch"
 }
 
 # ── Git Prompt ────────────────────────────────────────────────────────────────
@@ -212,3 +269,6 @@ export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
 # Cargo/Rust
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+
+# direnv: auto-load .envrc files when entering directories
+command -v direnv &>/dev/null && eval "$(direnv hook bash)"

@@ -40,10 +40,24 @@ script offers an interactive menu to install tools via Homebrew:
 
 | Config | Target | Description |
 |--------|--------|-------------|
-| `dot_bash_profile.tmpl` | `~/.bash_profile` | Primary shell config with git-aware prompt (`[branch !?+*]` indicators), fzf integration, `eza`/`bat` aliases, `extract` function, organized PATH management |
+| `dot_bash_profile.tmpl` | `~/.bash_profile` | Primary shell config (details below) |
 | `dot_bashrc` | `~/.bashrc` | Linux-only shell config (skipped on macOS) |
 | `dot_inputrc` | `~/.inputrc` | Readline: case-insensitive completion, Tab/Shift-Tab cycling, Up/Down prefix history search, colored stats |
 | `dot_hushlogin` | `~/.hushlogin` | Suppresses "Last login" message on macOS terminal open |
+
+**Bash highlights:**
+
+- **Prompt** -- git-aware PS1 with branch name and status indicators (`!` modified, `?` untracked, `+` new, `*` ahead, `>` renamed, `x` deleted)
+- **History** -- 50k entries, timestamped, flushed after every command, multi-line commands saved as one entry
+- **Shell options** -- `autocd` (cd by typing dir name), `extglob` (extended patterns), `nocaseglob`, `cdspell`, `globstar`
+- **CDPATH** -- `cd projectname` from anywhere finds `~/dev/projectname`
+- **PATH management** -- remove-then-add helpers guarantee correct ordering even with inherited PATH
+- **Modern aliases** -- `eza` for `ls`, `bat` for `cat`, safety aliases (`rm -i`, `mv -i`, `cp -i`)
+- **FZF functions** -- `fcd` (fuzzy cd), `fh` (fuzzy history), `fkill` (fuzzy process kill), `gco` (fuzzy git branch checkout)
+- **Utility functions** -- `extract` (any archive), `mkcd` (mkdir + cd), `b N` (go back N dirs), `note` (timestamped scratch notes), `cp_p` (copy with progress)
+- **Man pages** -- syntax-highlighted via `bat` as `MANPAGER`
+- **Integrations** -- fzf (with fd), direnv, Homebrew completions
+- **XDG** -- explicit `XDG_CONFIG_HOME`, `XDG_DATA_HOME`, `XDG_STATE_HOME`, `XDG_CACHE_HOME`
 
 ### Editor
 
@@ -92,6 +106,68 @@ script offers an interactive menu to install tools via Homebrew:
 |--------|--------|-------------|
 | `dot_config/fastfetch/config.jsonc` | `~/.config/fastfetch/config.jsonc` | System info display with compact layout |
 | `dot_config/btop/btop.conf` | `~/.config/btop/btop.conf` | System monitor with onedark theme |
+
+---
+
+## Bash
+
+### Aliases
+
+| Alias | Command | Description |
+|-------|---------|-------------|
+| `ls` | `eza --icons --group-directories-first` | Modern ls with icons |
+| `ll` | `eza -la --icons --group-directories-first` | Long listing |
+| `lt` | `eza --tree --level=2 --icons` | Tree view (2 levels) |
+| `cat` | `bat --style=plain --paging=never` | Syntax-highlighted cat |
+| `vim` / `vi` | `nvim` | Always use neovim |
+| `rm` | `rm -i` | Confirm before delete (bypass with `rm -f`) |
+| `mv` | `mv -i` | Confirm before overwrite |
+| `cp` | `cp -i` | Confirm before overwrite |
+| `..` | `cd ..` | Go up one directory |
+| `...` | `cd ../..` | Go up two directories |
+| `gs` | `git status -s` | Short git status |
+| `gl` | `git lg` | Pretty git log |
+| `gd` | `git diff` | Git diff |
+| `gp` | `git pull` | Git pull |
+| `gc` | `git commit` | Git commit |
+
+### Functions
+
+| Function | Usage | Description |
+|----------|-------|-------------|
+| `fcd` | `fcd` | Fuzzy directory picker with tree preview (fzf + fd) |
+| `fh` | `fh` | Fuzzy history search and re-execute |
+| `fkill` | `fkill` | Fuzzy process killer |
+| `gco` | `gco` | Fuzzy git branch checkout with log preview |
+| `note` | `note "fix the bug"` | Append timestamped note to `~/.notes` |
+| `note` | `note` | Read all notes |
+| `extract` | `extract file.tar.gz` | Extract any archive format |
+| `mkcd` | `mkcd newdir` | Create directory and cd into it |
+| `b` | `b 3` | Go back N directories |
+| `cp_p` | `cp_p src dst` | Copy with progress bar (rsync) |
+
+### Shell Options
+
+| Option | Description |
+|--------|-------------|
+| `autocd` | Type a directory name to cd into it (no `cd` prefix needed) |
+| `extglob` | Extended globs: `rm !(keep.txt)`, `ls @(*.js\|*.ts)` |
+| `nocaseglob` | `ls *.jpg` also matches `*.JPG` |
+| `globstar` | `**/*.ts` matches recursively |
+| `cdspell` / `dirspell` | Autocorrect typos in cd and directory names |
+| `cdable_vars` | `cd VARNAME` works if the variable holds a path |
+| `no_empty_cmd_completion` | Tab on empty line does nothing |
+
+### FZF Keybindings (terminal)
+
+| Key | Action |
+|-----|--------|
+| `Ctrl+T` | Fuzzy file finder (paste path at cursor) |
+| `Ctrl+R` | Fuzzy history search |
+| `Alt+C` | Fuzzy cd into directory |
+| `Tab` / `Shift+Tab` | Cycle through completions (readline) |
+| `Up` / `Down` | Search history by current prefix (readline) |
+| `Ctrl+Left` / `Ctrl+Right` | Move cursor by word (readline) |
 
 ---
 
