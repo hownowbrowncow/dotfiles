@@ -74,8 +74,11 @@ return {
       { desc = "Scroll opencode down" }
     )
 
-    -- You may want these if you use the opinionated `<C-a>` and `<C-x>` keymaps above — otherwise consider `<leader>o…` (and remove terminal mode from the `toggle` keymap)
-    vim.keymap.set("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
-    vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
+    -- Remap increment/decrement to +/- (since <C-a>/<C-x> are used by opencode)
+    -- dial.nvim provides smart increment (booleans, dates, semver, case styles)
+    vim.keymap.set("n", "+", function() return require("dial.map").manipulate("increment", "normal") end, { desc = "Increment (dial)" })
+    vim.keymap.set("n", "-", function() return require("dial.map").manipulate("decrement", "normal") end, { desc = "Decrement (dial)" })
+    vim.keymap.set("v", "+", function() return require("dial.map").manipulate("increment", "visual") end, { desc = "Increment (dial)" })
+    vim.keymap.set("v", "-", function() return require("dial.map").manipulate("decrement", "visual") end, { desc = "Decrement (dial)" })
   end,
 }

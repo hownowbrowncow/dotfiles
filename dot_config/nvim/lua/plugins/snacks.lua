@@ -51,5 +51,25 @@ return {
 
     -- ── Words: highlight references ───────────────────────────────────────
     words = { enabled = true },
+
+    -- ── Lazygit: floating terminal with theme sync ────────────────────────
+    lazygit = {
+      configure = true, -- auto-sync kanagawa theme to lazygit
+    },
+
+    -- ── Big file: disable heavy features on large files ───────────────────
+    bigfile = { enabled = true },
+
+    -- ── Quick file: render files before plugins load ──────────────────────
+    quickfile = { enabled = true },
+
+    -- ── Scratch: persistent scratch buffers per project ───────────────────
+    scratch = {},
+
+    -- ── Rename: LSP-aware file rename ─────────────────────────────────────
+    rename = {},
+
+    -- ── Git browse: open files on GitHub ──────────────────────────────────
+    gitbrowse = {},
   },
 }
