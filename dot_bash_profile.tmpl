@@ -25,14 +25,24 @@ export HOMEBREW_NO_ENV_HINTS=1
 {{- end }}
 
 # ── PATH Helpers ──────────────────────────────────────────────────────────────
+# Remove-then-add to guarantee ordering even when PATH is inherited
+pathRemove() {
+  PATH="${PATH//:$1:/:}"   # remove from middle
+  PATH="${PATH/#$1:/}"     # remove from start
+  PATH="${PATH/%:$1/}"     # remove from end
+  PATH="${PATH/#$1/}"      # remove if it's the only entry
+}
+
 pathAddBefore() {
-  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+  if [ -d "$1" ]; then
+    pathRemove "$1"
     PATH="$1${PATH:+:${PATH}}"
   fi
 }
 
 pathAddAfter() {
-  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+  if [ -d "$1" ]; then
+    pathRemove "$1"
     PATH="${PATH:+"$PATH:"}$1"
   fi
 }
