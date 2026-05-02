@@ -177,7 +177,7 @@ AstroNvim v5 with kanagawa-wave theme. Leader key is `,`.
 
 ### Plugins
 
-**Language & LSP** -- vtsls (TypeScript), jsonls + SchemaStore, marksman (Markdown), lua-language-server, eslint_d via none-ls, prettierd formatting, stylelint, ts-error-translator (plain English TS errors), inc-rename (live rename preview)
+**Language & LSP** -- vtsls (TypeScript), jsonls + SchemaStore, marksman (Markdown), lua-language-server, eslint_d via none-ls, prettierd formatting, stylelint, ts-error-translator (plain English TS errors), inc-rename (live rename preview), actions-preview (diff preview for code actions), nvim-lsp-file-operations (auto-update imports on file move), signature help (auto-show parameter hints), ts-comments (context-aware JSX/TS commenting)
 
 **Themes** -- kanagawa-wave (default), tokyonight, catppuccin, rose-pine, nightfox
 
@@ -189,11 +189,15 @@ AstroNvim v5 with kanagawa-wave theme. Leader key is `,`.
 
 **Navigation** -- flash.nvim (fast jumps), neo-tree (file explorer), aerial (code outline), treesitter-context (pinned function headers), snacks.picker (fuzzy finder)
 
-**Editing** -- mini.surround, mini.ai (enhanced text objects), mini.move (move lines), treesj (split/join), dial.nvim (smart increment), yanky.nvim (yank ring), refactoring.nvim, rainbow-delimiters, todo-comments, autopairs, blink.cmp
+**Editing** -- mini.surround, mini.ai (enhanced text objects), mini.move (move lines), treesj (split/join), dial.nvim (smart increment), yanky.nvim (yank ring), refactoring.nvim, rainbow-delimiters, todo-comments, autopairs, blink.cmp, text-case (case conversion), neogen (doc generation)
 
-**Diagnostics** -- trouble.nvim (pretty diagnostics panel)
+**Diagnostics** -- trouble.nvim (pretty diagnostics panel), diagnostic-virtual-lines (full error on current line)
+
+**Quickfix** -- nvim-bqf (preview, fzf filtering, multi-select)
 
 **Search** -- grug-far.nvim (project-wide find & replace)
+
+**REST Client** -- kulala.nvim (send HTTP requests from `.http` files)
 
 **Visual/UX** -- smooth scrolling, indent guides with animation, scope dimming, word references, zen mode, render-markdown (rich in-buffer rendering), bigfile protection, auto-session-restore
 
@@ -283,7 +287,7 @@ AstroNvim v5 with kanagawa-wave theme. Leader key is `,`.
 | `gy` | n | Go to type definition |
 | `gK` | n | Signature help |
 | `gl` | n | Hover diagnostics |
-| `,la` | n, x | Code action |
+| `,la` | n, x | Code action (with diff preview) |
 | `,ld` | n | Hover diagnostics |
 | `,lD` | n | Search diagnostics |
 | `,lf` | n, v | Format buffer |
@@ -292,6 +296,8 @@ AstroNvim v5 with kanagawa-wave theme. Leader key is `,`.
 | `,ls` | n | Search symbols (aerial) |
 | `,ll` | n | CodeLens refresh |
 | `,cR` | n | Rename file (LSP-aware, updates imports) |
+
+Signature help auto-shows function parameter hints as you type. Diagnostics show full error as virtual lines on the current cursor line.
 
 #### Diagnostics / Trouble (`,x`)
 
@@ -335,8 +341,9 @@ AstroNvim v5 with kanagawa-wave theme. Leader key is `,`.
 | `+` / `-` | n, v | Smart increment / decrement (booleans, dates, semver, case) |
 | `Alt+H/J/K/L` | n, v | Move line/selection left/down/up/right |
 | `,m` | n | Toggle split/join (single-line / multi-line) |
-| `,/` | n, x | Toggle comment |
+| `,/` | n, x | Toggle comment (context-aware: `{/* */}` in JSX, `//` in TS) |
 | `[y` / `]y` | n | Cycle yank history (backward / forward) |
+| `ga.` | n | Case conversion (then motion + pick target case) |
 
 ##### Text Objects (mini.ai)
 
@@ -348,6 +355,15 @@ AstroNvim v5 with kanagawa-wave theme. Leader key is `,`.
 | `dab` | Delete around brackets |
 | `vit` | Select inside tag |
 
+#### Documentation (`,a` -- neogen)
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `,af` | n | Generate doc for function |
+| `,ac` | n | Generate doc for class |
+| `,at` | n | Generate doc for type |
+| `,aF` | n | Generate doc for file |
+
 #### Refactoring (`,r`)
 
 | Key | Mode | Action |
@@ -357,6 +373,29 @@ AstroNvim v5 with kanagawa-wave theme. Leader key is `,`.
 | `,rv` | v | Extract variable |
 | `,ri` | n, v | Inline variable |
 | `,rr` | v | Select refactor |
+
+#### REST Client (`,R` -- kulala)
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `,Rs` | n | Send request under cursor |
+| `,Ra` | n | Send all requests in file |
+| `,Ri` | n | Inspect current request |
+| `,Rt` | n | Toggle response body/headers |
+| `,Rc` | n | Copy request as cURL |
+| `,Rp` | n | Paste from cURL |
+
+Create `.http` files with request definitions (e.g., `GET https://api.example.com/users`).
+
+#### Quickfix (nvim-bqf)
+
+| Key | Mode | Action |
+|-----|------|--------|
+| `zf` | n (quickfix) | Fuzzy filter quickfix results |
+| `zn` / `zN` | n (quickfix) | Filter by filename / reverse |
+| `<Tab>` | n (quickfix) | Multi-select items |
+| `<C-x>` | n (quickfix) | Open in horizontal split |
+| `<C-v>` | n (quickfix) | Open in vertical split |
 
 #### Testing (`,T`)
 
@@ -411,6 +450,7 @@ AstroNvim v5 with kanagawa-wave theme. Leader key is `,`.
 | `,uZ` | n | Toggle zen mode |
 | `,u\|` | n | Toggle indent guides |
 | `,u(` | n | Toggle rainbow delimiters |
+| `,u?` | n | Toggle signature help |
 | `,uY` | n | Toggle semantic highlight |
 
 #### AI
