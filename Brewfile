@@ -19,7 +19,7 @@ brew "coreutils"               # GNU core utilities
 # tag:dev
 brew "gh"                      # GitHub CLI
 brew "lazygit"                 # Terminal UI for git
-brew "neovim"                  # Editor (or use bob-nvim)
+brew "bob"                     # Neovim version manager
 brew "chezmoi"                 # Dotfile manager
 brew "direnv"                  # Per-directory env vars
 brew "act"                     # Run GitHub Actions locally

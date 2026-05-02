@@ -15,7 +15,7 @@ return {
       highlighturl = true,      -- highlight URLs at start
       notifications = true,     -- enable notifications at start
     },
-    -- Diagnostics configuration (vim.diagnostics.config)
+    -- Diagnostics configuration (vim.diagnostic.config)
     diagnostics = {
       virtual_text = true,
       underline = true,
@@ -30,8 +30,25 @@ return {
         wrap = false,
         scrolloff = 8,     -- keep 8 lines visible above/below cursor
         sidescrolloff = 8,
+        cursorline = true,   -- highlight the current line
+        cursorcolumn = true, -- highlight the current column
+        guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20", -- beam cursor in insert mode
       },
       g = {},
+    },
+    -- Make cursor crosshair more visible
+    autocmds = {
+      cursor_highlights = {
+        {
+          event = "ColorScheme",
+          desc = "Set cursor crosshair highlights",
+          callback = function()
+            vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2a2a3a" })
+            vim.api.nvim_set_hl(0, "CursorColumn", { bg = "#2a2a3a" })
+            vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#e0af68", bold = true })
+          end,
+        },
+      },
     },
     -- Mappings (leaders are set in lazy_setup.lua)
     mappings = {

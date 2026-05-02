@@ -1,7 +1,6 @@
--- Disable aerial.nvim due to treesitter API incompatibility
--- Re-enable after aerial updates to support the current Neovim treesitter API
+-- Override AstroNvim's ^2.2 pin; v3+ fixes deprecated treesitter APIs
 ---@type LazySpec
 return {
   "stevearc/aerial.nvim",
-  enabled = false,
+  version = "^3",
 }
