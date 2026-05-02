@@ -36,16 +36,17 @@ return {
       },
       g = {},
     },
-    -- Make cursor crosshair more visible
+    -- Cursor crosshair: let the colorscheme handle CursorLine/CursorColumn colors
+    -- kanagawa-wave has good defaults; CursorLineNr bolded for visibility
     autocmds = {
       cursor_highlights = {
         {
           event = "ColorScheme",
-          desc = "Set cursor crosshair highlights",
+          desc = "Bold cursor line number",
           callback = function()
-            vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2a2a3a" })
-            vim.api.nvim_set_hl(0, "CursorColumn", { bg = "#2a2a3a" })
-            vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#e0af68", bold = true })
+            local hl = vim.api.nvim_get_hl(0, { name = "CursorLineNr" })
+            hl.bold = true
+            vim.api.nvim_set_hl(0, "CursorLineNr", hl)
           end,
         },
       },
@@ -66,6 +67,11 @@ return {
           end,
           desc = "Close buffer from tabline",
         },
+
+        -- Snacks UX toggles
+        ["<Leader>uS"] = { function() require("snacks").toggle.scroll():toggle() end, desc = "Toggle smooth scroll" },
+        ["<Leader>ud"] = { function() require("snacks").toggle.dim():toggle() end, desc = "Toggle dim mode" },
+        ["<Leader>uw"] = { function() require("snacks").toggle.words():toggle() end, desc = "Toggle word references" },
       },
     },
   },

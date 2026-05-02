@@ -17,7 +17,7 @@ return {
         "prettierd",  -- Fast Prettier daemon (JS/TS/CSS/HTML/JSON/YAML/MD)
 
         -- ── Linters ───────────────────────────────────────────────────────
-        "eslint-lsp", -- ESLint LSP (supports ESLint 10 + flat config)
+        -- eslint_d is installed globally (npm) and used via none-ls
         "stylelint",  -- CSS / SCSS / Less linter
 
         -- ── Debuggers ─────────────────────────────────────────────────────

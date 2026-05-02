@@ -19,7 +19,7 @@ return {
       },
       -- Disable LSP-based formatting for servers where we use prettierd instead.
       -- This avoids a conflict between vtsls/eslint and prettierd both trying to format.
-      disabled = { "vtsls", "eslint" },
+      disabled = { "vtsls" },
       timeout_ms = 2000,
     },
     -- Enable servers already installed outside of Mason
@@ -30,18 +30,8 @@ return {
     -- Customize how language servers are attached
     handlers = {},
     -- Configure buffer local auto commands to add when attaching a language server
+    -- ESLint fix-on-save handled by eslint_d formatting source in none-ls
     autocmds = {
-      eslint_fix_on_save = {
-        cond = "textDocument/codeAction",
-        {
-          event = "BufWritePre",
-          desc = "Fix all ESLint errors on save",
-          callback = function(args)
-            local clients = vim.lsp.get_clients { bufnr = args.buf, name = "eslint" }
-            if #clients > 0 then vim.cmd "EslintFixAll" end
-          end,
-        },
-      },
       lsp_codelens_refresh = {
         cond = "textDocument/codeLens",
         {
