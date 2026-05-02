@@ -43,6 +43,10 @@ return {
   { import = "astrocommunity.editing-support.yanky-nvim" },
   -- Refactoring: extract function/variable, inline variable (<Leader>r)
   { import = "astrocommunity.editing-support.refactoring-nvim" },
+  -- Case conversion: camelCase ↔ snake_case ↔ PascalCase ↔ kebab-case
+  { import = "astrocommunity.editing-support.text-case-nvim" },
+  -- Generate JSDoc/TSDoc annotation skeletons (<Leader>a)
+  { import = "astrocommunity.editing-support.neogen" },
 
   -- ── Diagnostics ───────────────────────────────────────────────────────
   -- Trouble: pretty diagnostics / TODO / quickfix panel (<Leader>x)
@@ -53,6 +57,14 @@ return {
   { import = "astrocommunity.lsp.ts-error-translator-nvim" },
   -- Live rename preview: see all references update as you type
   { import = "astrocommunity.lsp.inc-rename-nvim" },
+  -- Code actions with live diff preview before applying
+  { import = "astrocommunity.lsp.actions-preview-nvim" },
+  -- Auto-update imports when renaming/moving files in neo-tree
+  { import = "astrocommunity.lsp.nvim-lsp-file-operations" },
+
+  -- ── Quickfix ────────────────────────────────────────────────────────────
+  -- Better quickfix with preview, fzf filtering, multi-select
+  { import = "astrocommunity.quickfix.nvim-bqf" },
 
   -- ── Search ────────────────────────────────────────────────────────────
   -- Project-wide find & replace UI (<Leader>s)
@@ -78,7 +90,23 @@ return {
   -- Rich markdown rendering in-buffer (headings, checkboxes, tables)
   { import = "astrocommunity.markdown-and-latex.render-markdown-nvim" },
 
+  -- ── Comment ─────────────────────────────────────────────────────────
+  -- Context-aware comments: uses {/* */} in JSX, // in TS, etc.
+  { import = "astrocommunity.comment.ts-comments-nvim" },
+
+  -- ── REST Client ───────────────────────────────────────────────────────
+  -- Send HTTP requests from .http files (<Leader>R prefix to avoid refactoring conflict)
+  {
+    import = "astrocommunity.programming-language-support.kulala-nvim",
+  },
+  {
+    "mistweaverco/kulala.nvim",
+    opts = { global_keymaps_prefix = "<leader>R" },
+  },
+
   -- ── Recipes ───────────────────────────────────────────────────────────
   -- Auto-restore last session when opening nvim in a project directory
   { import = "astrocommunity.recipes.auto-session-restore" },
+  -- Full diagnostic on current line, short virtual text on others
+  { import = "astrocommunity.recipes.diagnostic-virtual-lines-current-line" },
 }

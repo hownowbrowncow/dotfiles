@@ -11,6 +11,7 @@ return {
       codelens = true,        -- enable/disable codelens refresh on start
       inlay_hints = false,    -- enable/disable inlay hints on start (toggle: <Leader>uH)
       semantic_tokens = true, -- enable/disable semantic token highlighting
+      signature_help = true,  -- auto-show function parameter hints while typing
     },
     -- Customize lsp formatting options
     formatting = {
