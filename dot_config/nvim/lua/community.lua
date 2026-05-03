@@ -105,8 +105,7 @@ return {
   },
 
   -- ── Recipes ───────────────────────────────────────────────────────────
-  -- Auto-restore last session when opening nvim in a project directory
-  { import = "astrocommunity.recipes.auto-session-restore" },
+  -- Sessions auto-save on exit; manually restore with ,Sl from dashboard
   -- Full diagnostic on current line, short virtual text on others
   { import = "astrocommunity.recipes.diagnostic-virtual-lines-current-line" },
 }
